@@ -5,4 +5,6 @@ print(a)
 if a > 2:
     print("stop")
     print ("yes")
+    print ("maybe")
+    
 print(a+b)
