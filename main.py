@@ -15,7 +15,6 @@ de.plot_n_images(train_path,labels,3)
 de.shape_labels(labels,train_path)
 
 flatten_dataset = de.get_flatten_dataset(train_path,labels)
-
 new_labels = de.flatten_labels(labels,train_path)
 
 tsne_dataset = dp.tsne_method(flatten_dataset)

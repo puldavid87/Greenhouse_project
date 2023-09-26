@@ -21,16 +21,16 @@ from sklearn.ensemble import IsolationForest
 def tsne_method(flatten_dataset):
     #flatten_dataset_in = np.array(flatten_dataset)
     tsne = manifold.TSNE(n_components=2)
-    dr_dataset = tsne.fit_transform(flatten_dataset_in)
+    dr_dataset = tsne.fit_transform(flatten_dataset)
     return dr_dataset
 
 #################################################
 ###################   P   C   A   ###############
 #################################################
 def pca_method (flatten_dataset):
-    flatten_dataset_in = np.array(flatten_dataset)
+    #flatten_dataset_in = np.array(flatten_dataset)
     pca = PCA(n_components=2)
-    pca_result = pca.fit_transform(flatten_dataset_in)
+    pca_result = pca.fit_transform(flatten_dataset)
     return pca_result
 
 #flatten_dataset
