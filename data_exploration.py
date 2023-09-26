@@ -100,25 +100,6 @@ def get_flatten_dataset (train_path,labels):
             flatten_dataset.append(ima)
     flatten_dataset = np.array(flatten_dataset)
     return flatten_dataset, directory
-#################################################
-###################  T  -  S N E  ###############
-#################################################
-       
-def tsne_method(flatten_dataset):
-    flatten_dataset_in = np.array(flatten_dataset)
-    tsne = manifold.TSNE(n_components=2)
-    dr_dataset = tsne.fit_transform(flatten_dataset_in)
-    return dr_dataset
-
-
-#################################################
-###################   P   C   A   ###############
-#################################################
-def pca_method (flatten_dataset):
-    flatten_dataset_in = np.array(flatten_dataset)
-    pca = PCA(n_components=2)
-    pca_result = pca.fit_transform(flatten_dataset_in)
-    return pca_result
 
 def flatten_labels (labels, train_path):
     labels_dr = []
@@ -127,10 +108,4 @@ def flatten_labels (labels, train_path):
         for i in range (len(os.listdir(train_path+"/"+i))):
             labels_dr.append(j)
         j +=1    
-    return labels_dr        
-
-def plot_dr_figure (dr_dataset,labels_dr):
-    plt.figure(figsize=(16,10))
-    plt.scatter(dr_dataset [:,0],dr_dataset [:,1], c=labels_dr)
-    plt.show()
-                
+    return labels_dr                
