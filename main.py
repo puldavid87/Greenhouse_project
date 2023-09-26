@@ -1,5 +1,6 @@
 import data_exploration as de
 import data_preprocessing as dp
+import data_augmentation_keras as dak
 dataset_path = "C:/Users/paur/Documents/Invernadero/Greenhouse_project/dataset"
 train_path = dataset_path+"/train"
 test_path = dataset_path+"/test"
@@ -34,5 +35,4 @@ labels, tam_labels = de.get_labels(destination_path+"svm/train")
 train_path=destination_path+"svm/train"
 
 dp.balancing_data(tam_labels,train_path,labels)
-            
-    
+               
