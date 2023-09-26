@@ -5,6 +5,8 @@
 ## Database
 
 - Label  dried_leaves :  99
+
+![alt text](https://github.com/puldavid87/Greenhouse_project/blob/Testing/fig1.png)
 - Label  healthy_leaves :  108
 - Label  leaves_with_stains :  64
 - Label  leaves_yellow_stains :  113
