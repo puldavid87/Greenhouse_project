@@ -26,4 +26,5 @@ svm_dataset = dp.osvm_ps(pca_dataset, "poly")
 
 iso_datate = dp.iso_ps(pca_dataset, 0.4)
 
-dp.make_dataset_ps ("svm",destination_path,train_path, svm_dataset,labels)
+dp.make_new_dataset ("svm",destination_path,train_path, svm_dataset,labels)
+
