@@ -92,7 +92,7 @@ def balancing_data (tam_labels, train_path, labels):
             file_names = os.listdir(train_path+"/"+labels[pos])
             target_images = random.sample(file_names, l)
             for m in target_images:
-                shutil.copy(file_names +
-                                    "/" + str(m),file_names 
+                shutil.copy(train_path+"/"+labels[pos] +
+                                    "/" + str(m),train_path+"/"+labels[pos] 
                                     + "/"+str(l) + str(m))    
     print("Done")            
