@@ -15,16 +15,11 @@ import shutil
 from sklearn.svm import OneClassSVM
 from sklearn.ensemble import IsolationForest
 
-dataset_path = "C:/Users/paur/Documents/Invernadero/dataset"
-destination_path = "C:/Users/paur/Documents/Invernadero/"
-train_path = dataset_path+"/train"
-test_path = dataset_path+"/test"
-
 #################################################
 ###################  T  -  S N E  ###############
 #################################################
 def tsne_method(flatten_dataset):
-    flatten_dataset_in = np.array(flatten_dataset)
+    #flatten_dataset_in = np.array(flatten_dataset)
     tsne = manifold.TSNE(n_components=2)
     dr_dataset = tsne.fit_transform(flatten_dataset_in)
     return dr_dataset

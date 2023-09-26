@@ -10,6 +10,8 @@
 - Label  leaves_yellow_stains :  113
 Total = 384 samples
 
+Image size : (224, 224, 3)
+
 ### Kaggle
 From the Anaconda promtpt:
 - conda activate tf 

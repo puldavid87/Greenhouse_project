@@ -18,5 +18,5 @@ flatten_dataset = de.get_flatten_dataset(train_path,labels)
 
 new_labels = de.flatten_labels(labels,train_path)
 
-
+tsne_dataset = dp.tsne_method(flatten_dataset)
 
