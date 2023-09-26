@@ -82,3 +82,17 @@ def plot_dr_figure (dr_dataset,labels_dr):
     plt.figure(figsize=(16,10))
     plt.scatter(dr_dataset [:,0],dr_dataset [:,1], c=labels_dr)
     plt.show()
+
+
+
+def balancing_data (tam_labels, train_path, labels):
+    for pos, i in enumerate(tam_labels):
+        if i < max(tam_labels):
+            l= max(tam_labels)-i
+            file_names = os.listdir(train_path+"/"+labels[pos])
+            target_images = random.sample(file_names, l)
+            for m in target_images:
+                shutil.copy(file_names +
+                                    "/" + str(m),file_names 
+                                    + "/"+str(l) + str(m))    
+    print("Done")            

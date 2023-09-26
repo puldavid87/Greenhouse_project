@@ -28,3 +28,11 @@ iso_datate = dp.iso_ps(pca_dataset, 0.4)
 
 dp.make_new_dataset ("svm",destination_path,train_path, svm_dataset,labels)
 
+
+labels, tam_labels = de.get_labels(destination_path+"svm/train")
+
+train_path=destination_path+"svm/train"
+
+dp.balancing_data(tam_labels,train_path,labels)
+            
+    
