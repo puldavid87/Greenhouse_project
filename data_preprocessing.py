@@ -34,7 +34,7 @@ def pca_method (flatten_dataset):
     return pca_result
 
 #flatten_dataset
-def make_dataset_ps (dataset):
+def make_dataset_ps (dataset, y, directory):
     X = pd.DataFrame(dataset)
     X ["label"] = y
     X ['directory'] = directory
