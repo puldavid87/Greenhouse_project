@@ -21,3 +21,9 @@ tsne_dataset = dp.tsne_method(flatten_dataset)
 pca_dataset = dp.pca_method(flatten_dataset)
 
 pca_dataset = dp.make_dataset_ps(pca_dataset,new_labels,directory)
+
+svm_dataset = dp.osvm_ps(pca_dataset, "poly")
+
+iso_datate = dp.iso_ps(pca_dataset, 0.4)
+
+dp.make_dataset_ps ("svm",destination_path,train_path, svm_dataset,labels)
