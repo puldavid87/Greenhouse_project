@@ -1,6 +1,4 @@
-# -*- coding: utf-8 -*-
-
-import zipfile
+#https://scikit-learn.org/stable/auto_examples/ensemble/plot_isolation_forest.html
 import os
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
@@ -12,35 +10,17 @@ from PIL import Image
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 from sklearn.decomposition import PCA
-from kaggle.api.kaggle_api_extended import KaggleApi
+import pandas as pd
+import shutil
+from sklearn.svm import OneClassSVM
+from sklearn.ensemble import IsolationForest
 
-
-dataset_path = "C:/Users/paur/Documents/Invernadero/Greenhouse_project/dataset"
+dataset_path = "C:/Users/paur/Documents/Invernadero/dataset"
+destination_path = "C:/Users/paur/Documents/Invernadero/"
 train_path = dataset_path+"/train"
 test_path = dataset_path+"/test"
 
-# link: 'paulrosero/tomato-leaf-illness-detection'
-def autentication(link):
-    str(link)
-    api = KaggleApi()
-    api.authenticate()
-    api.dataset_download_files(link)
 
-#file_name : 'tomato-leaf-illness-detection.zip'
-def unzipfile(file_name):
-    str(file_name)
-    if os.path.isfile(file_name)==True:
-        with zipfile.ZipFile(file_name,'r') as zipref:
-            zipref.extractall()
-    else:
-        print("File not found")
-        
-def check_data(dataset):
-    for dirpath, dirnames, filenames in os.walk(dataset):
-        print(f"There are {len(dirnames)} directories and {len(filenames)} images in '{dirpath}'.")
-
-#train_path
-#get  labels and tam
 def get_labels(train_path):
     labels=[]
     tam = []
@@ -51,35 +31,9 @@ def get_labels(train_path):
         tam.append(num)
         print("Label ", labels[cont], ": ", num)
         tam_labels = np.array(tam) 
-    return labels, tam_labels    
-        
-def view_n_images(target_dir, target_class,n):
-    target_path = target_dir+"/"+target_class
-    file_names = os.listdir(target_path)
-    target_images = random.sample(file_names, n)   
-    # Plot images
-    plt.figure(figsize=(15, 6))
-    for i, img in enumerate(target_images):
-        img_path = target_path + "/" + img
-        plt.subplot(1, 3, i+1)
-        plt.imshow(mpimg.imread(img_path))
-        plt.title(target_class)
-        plt.axis("off")
+    return labels, tam_labels 
 
-def plot_n_images(train_path,labels,n):
-    for i in labels:
-     view_n_images(train_path,i,n)
-        
-def shape_labels(labels,train_path):
-
-    for i in labels:
-        target_path = train_path+"/"+i
-        file_names = os.listdir(target_path)
-        target_image = random.sample(file_names, 1)
-        img = mpimg.imread(target_path + "/" + str(target_image[0]))
-        print(i, ": ", img.shape)
-        print(img.shape[0]*img.shape[1])
-
+labels,tam_labels=get_labels(train_path)
 
 def get_flatten_dataset (train_path,labels):            
     flatten_dataset = []
@@ -100,10 +54,7 @@ def get_flatten_dataset (train_path,labels):
             flatten_dataset.append(ima)
     flatten_dataset = np.array(flatten_dataset)
     return flatten_dataset, directory
-#################################################
-###################  T  -  S N E  ###############
-#################################################
-       
+
 def tsne_method(flatten_dataset):
     flatten_dataset_in = np.array(flatten_dataset)
     tsne = manifold.TSNE(n_components=2)
@@ -127,10 +78,59 @@ def flatten_labels (labels, train_path):
         for i in range (len(os.listdir(train_path+"/"+i))):
             labels_dr.append(j)
         j +=1    
-    return labels_dr        
+    return labels_dr    
+
+flatte_dataset,directory = get_flatten_dataset(train_path,labels)
+
+
+pca_dataset = pca_method (flatte_dataset)
+
+tsne_dataset = tsne_method (flatte_dataset)
+
+y = flatten_labels(labels,train_path)
+
+X = pd.DataFrame(pca_dataset)
+X ["label"] = y
+X ['directory'] = directory
+print(X)
+#ONE CLASS SVM
+
+
+
+osvm = OneClassSVM(kernel='poly', nu=0.3)
+aux=osvm.fit_predict(X.iloc[:,:-2])
+one_svm_database=X[(aux==1)]
+print(one_svm_database)
+
+def make_new_dataset(model_name,destination_path,train_path,dataset,labels):
+    folder = destination_path + "/" + str(model_name)
+    train_folder = folder + "/"+"train"
+    os.makedirs(folder)
+    os.makedirs(train_folder)
+    for i in labels:
+        train_path_folder=train_folder + "/" + str(i)
+        os.makedirs(train_path_folder)
+        file_path = train_path + "/" + i
+        file_names = os.listdir(file_path)
+        for j in file_names:
+            for l in dataset.iloc[:,-1]:
+                if j == l:
+                    shutil.copy(file_path +
+                                "/" + str(j),train_path_folder 
+                                + "/" + str(l))
+#ISOLATION FOREST BY LABELS
+
+
+iso=IsolationForest(contamination=0.3)
+aux=iso.fit_predict(X.iloc[:,:-2])
+isolation_database=X[(aux==1)]
+print(isolation_database)
 
 def plot_dr_figure (dr_dataset,labels_dr):
+    dr_dataset = np.array(dr_dataset)
     plt.figure(figsize=(16,10))
     plt.scatter(dr_dataset [:,0],dr_dataset [:,1], c=labels_dr)
     plt.show()
-                
+
+print(X.iloc[:,-1])    
+plot_dr_figure(X.iloc[:,:-2],X.iloc[:,-2])
