@@ -9,23 +9,28 @@ import matplotlib.image as mpimg
 from tensorflow.keras.preprocessing.image import ImageDataGenerator, load_img, img_to_array, array_to_img
 
 dataset_path = "C:/Users/paur/Documents/Invernadero/Greenhouse_project/dataset"
-train_path = dataset_path+"/train"
+train_path = dataset_path + "/train"
 output_path = "C:/Users/paur/Documents/Invernadero/Greenhouse_project/augmented_images"
 os.makedirs(output_path, exist_ok=True)
-labels = ['dried_leaves','healthy_leaves', 'leaves_with_stains', 'leaves_yellow_stains' ]
+labels = [
+    'dried_leaves',
+    'healthy_leaves',
+    'leaves_with_stains',
+    'leaves_yellow_stains']
+
 def rotation_per_image (train_path,labels, output_path):
     for i in labels:
-        os.makedirs(output_path+"/"+i, exist_ok=True)
+        os.makedirs(output_path + "/" + i, exist_ok=True)
     for i in labels:    
-        file_names = os.listdir(train_path+"/"+i)
+        file_names = os.listdir(train_path + "/" + i)
         img = random.sample(file_names, 1)
-        image = load_img(train_path+"/" +i+ "/" + str(img[0]))
+        image = load_img(train_path + "/" + i + "/" + str(img[0]))
         x = img_to_array(image)
         x = np.expand_dims(x, axis=0)
         cont = 0
         for batch in datagen.flow(x, batch_size=1):
             augmented_image = array_to_img(batch[0])
-            save_path = os.path.join(output_path+"/"+i, f"augmented_image_{i}_{cont}.jpg")
+            save_path = os.path.join(output_path + "/" + i, f"augmented_image_{i}_{cont}.jpg")
             augmented_image.save(save_path)
             cont += 1
             
