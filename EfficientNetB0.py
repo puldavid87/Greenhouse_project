@@ -6,7 +6,6 @@ Created on Fri Apr 14 17:05:12 2023
 """
 import pathlib
 from datetime import datetime
-
 import matplotlib.pyplot as plt
 import pandas as pd
 import psutil
@@ -23,20 +22,14 @@ path_destination = "C:/Users/paur/Documents/Invernadero/Greenhouse_project/TF_MO
 path_data_source = "C:/Users/paur/Documents/Invernadero/Greenhouse_project/dataset"
 test_dir = "C:/Users/paur/Documents/Invernadero/Greenhouse_project/dataset/test"
 
-df = [{'dataset': 1, 'epochs': 1, 'DA': 1, 'layers': 1,
-       'train': 1, 'test': 1, 'exec.time': 1, 'ram': 1, 'cpu': 1}]
-df = pd.DataFrame(data=df)
-# ,"data10","data25","data50","data75","data_con1","data_con10", "data_con25", "data_con50", "data_con75", "data100"]
-datasets = []
 classes = 4
-epochs_vector = [1]
+epochs = 20
 unfreeze_layers = [-20]
 
 # Define some parameters for the loader:
 batch_size = 32
 img_height = 224
 img_width = 224
-
 
 def split_tratin_test_set():
     train_dir = path_data_source  + "/" + "train"
@@ -128,7 +121,7 @@ def unfreeze_model(model, num):
     )
 
 
-def results(model, test_data, dataset, name):
+def results(model, test_data, name):
     y_pred = []
     results = model.predict(test_data)
     for i in results:
@@ -167,14 +160,6 @@ def results(model, test_data, dataset, name):
     print('\\Report\n')
     print(report)
 
-    matrix = pd.DataFrame(matrix)
-    matrix.to_csv(
-        path_destination +
-        "cf_matrix" +
-        str(name) +
-        str(dataset) +
-        ".csv",
-        index=False)
     ax = plt.plot()
     ax = sns.heatmap(matrix, annot=True, cmap='Blues')
     ax.set_title('Confusion Matrix with labels\n\n')
@@ -182,80 +167,71 @@ def results(model, test_data, dataset, name):
     ax.set_ylabel('Actual Values ')
     plt.savefig(
         path_destination +
-        "cf_matrix_fig_efficient_" +
-        str(dataset) +
-        "_" +
+        "cf_efficient_" +
         str(name) +
         ".png")
     # Display the visualization of the Confusion Matrix.
     plt.show()
 
 
-def plot_loss_curves(history):
-  """
-  Returns separate loss curves for training and validation metrics.
-  """ 
-  loss = history.history['loss']
-  val_loss = history.history['val_loss']
+def plot_loss_curves(history, name):
+    loss = history.history['loss']
+    val_loss = history.history['val_loss']
 
-  accuracy = history.history['accuracy']
-  val_accuracy = history.history['val_accuracy']
+    accuracy = history.history['accuracy']
+    val_accuracy = history.history['val_accuracy']
 
-  epochs = range(len(history.history['loss']))
+    epochs = range(len(history.history['loss']))
 
-  # Plot loss
-  plt.plot(epochs, loss, label='training_loss')
-  plt.plot(epochs, val_loss, label='val_loss')
-  plt.title('Loss')
-  plt.xlabel('Epochs')
-  plt.legend()
+    # Plot loss
+    plt.plot(epochs, loss, label='training_loss')
+    plt.plot(epochs, val_loss, label='val_loss')
+    plt.title('Loss')
+    plt.xlabel('Epochs')
+    plt.legend()
+    plt.savefig( path_destination +
+                    "Loss_"+
+                str(name)+".png")
 
-  # Plot accuracy
-  plt.figure()
-  plt.plot(epochs, accuracy, label='training_accuracy')
-  plt.plot(epochs, val_accuracy, label='val_accuracy')
-  plt.title('Accuracy')
-  plt.xlabel('Epochs')
-  plt.legend()
+    # Plot accuracy
+    plt.figure()
+    plt.plot(epochs, accuracy, label='training_accuracy')
+    plt.plot(epochs, val_accuracy, label='val_accuracy')
+    plt.title('Accuracy')
+    plt.xlabel('Epochs')
+    plt.legend()
+    plt.savefig( path_destination +
+                "ACC_"+
+                str(name)+".png")
 
-
-def training_results_fine(datasets, name):
-    fig, ax = plt.subplots()
-    for j in range(len(datasets)):
-        ax.plot(models[j].history["val_accuracy"], label=datasets[j])
-        # reshift plot around epochs
-        ax.plot([10 - 1, 10 - 1], plt.ylim(), label='Start Fine Tuning')
-        plt.title("model accuracy")
-        plt.ylabel("accuracy")
-        plt.xlabel("epoch")
-        # ax.legend()
-        plt.legend(loc="best")
-        plt.show()
-        fig.savefig(
-            path_destination +
-            "val_accuracy_fine_efficient_" +
-            str(j) +
-            ".png")
-
-
-callback = tf.keras.callbacks.EarlyStopping(monitor='val_accuracy', patience=2)
+callback = tf.keras.callbacks.EarlyStopping(monitor='val_accuracy', patience=5)
 
 train_data, validation_data, test_data = split_tratin_test_set()
             
-            
-for i in epochs_vector:
-    model = build_model(num_classes=classes, aprov_pre=False)
-    hist = model.fit(train_data,
-                         epochs=i,
-                         steps_per_epoch=len(train_data),
-                         validation_data=validation_data,
-                         # Go through less of the validation data so epochs are
-                         # faster (we want faster experiments!)
-                         validation_steps=int(len(validation_data)),
-                         verbose=1)
-  
-plot_loss_curves(hist)
-results (model, test_data, "first", "name")
+def first_model (classes, pre=False, name = "EfficientNetB0_test1"):            
+    model = build_model(num_classes=classes, aprov_pre=pre)
+    history = model.fit(train_data,
+                            epochs=1,
+                            steps_per_epoch=len(train_data),
+                            validation_data=validation_data,
+                            # Go through less of the validation data so epochs are
+                            # faster (we want faster experiments!)
+                            validation_steps=int(len(validation_data)),
+                            callbacks=[callback],
+                            verbose=1,
+                            )
+    model.save(
+                path_destination +
+                name+
+                    ".h5")
+    
+    plot_loss_curves(history, name)
+    results (model, test_data, name)
+    return model, history
+
+model, history = first_model(classes) 
+
+
 models = []
 for j in datasets:
     train_data, test_data = split_tratin_test_set(j)
@@ -265,13 +241,13 @@ for j in datasets:
             unfreeze_model(model, l)
             start = datetime.now()
             hist = model.fit(train_data,
-                             epochs=i,
+                             epochs=1,
                              steps_per_epoch=len(train_data),
                              validation_data=test_data,
                              # Go through less of the validation data so epochs
                              # are faster (we want faster experiments!)
                              validation_steps=int(len(test_data)),
-                             # callbacks=[callback],
+                             # 
                              verbose=1)
             end = datetime.now()
             # end_cpu=psutil.cpu_percent(interval=None)
