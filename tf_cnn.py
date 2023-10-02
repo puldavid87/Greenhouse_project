@@ -2,7 +2,7 @@ import cnn_tf_models as cnn_tf
 import data_exploration as de
 import data_augmentation_keras as dak
 import os
-import numpy as np
+
 #Datasets
 dataset_path = "C:/Users/paur/Documents/Invernadero/Greenhouse_project/dataset"
 train_path = dataset_path + "/train"
@@ -28,3 +28,4 @@ batch_size = 32
 
 cnn_tf.make_folder(folder_name, path_model_destination)
 
+rain_data, validation_data, test_data = cnn_tf.split_tratin_test_set()
