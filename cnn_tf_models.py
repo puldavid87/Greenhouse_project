@@ -107,7 +107,7 @@ def unfreeze_model(model, num):
     )
 
 
-def results(model, test_data, name):
+def results(model, test_data, name,path_model_destination):
     """
     Calculates model performance metrics on test data
     Args:
@@ -175,7 +175,7 @@ def results(model, test_data, name):
     plt.show()
 
 
-def plot_loss_curves(history, name):
+def plot_loss_curves(history, name, path_model_destination):
     """
     Plots loss and accuracy curves from the Keras model history
     Args:
@@ -219,8 +219,8 @@ def plot_loss_curves(history, name):
 
 
 #model, history = first_model(classes)
-def first_model(classes, name="EfficientNetB0_test1"):
-    model = build_model(num_classes=classes, aprov_pre=False)
+#Loading..
+def first_model(name="EfficientNetB0_test1", model, train_data, validation_data, test_data, callback):
     start = datetime.now()
     history = model.fit(train_data,
                         epochs=1,
@@ -248,7 +248,7 @@ def first_model(classes, name="EfficientNetB0_test1"):
 def compare_historys(
         original_history,
         new_history,
-        initial_epochs=5, name="EfficientNetB0"):
+        initial_epochs=5, name="EfficientNetB0",path_model_destination):
     """
     Compares two model history objects.
     Args:
@@ -309,18 +309,8 @@ def compare_historys(
                 "FINE_" +
                 str(name) + ".png")
 
-
-
-
-
-
-
-
-
-
-
 #model_1, history_1 = second_model(classes)
-def second_model(classes, name="EfficientNetB0_test2"):
+def second_model(name="EfficientNetB0_test1", model, train_data, validation_data, test_data, callback,unfreeze_layers):
     """
     Builds and trains a neural network model on provided data.
     
@@ -332,13 +322,12 @@ def second_model(classes, name="EfficientNetB0_test2"):
         history: Training history object
     
     Processing Logic:
-    - Builds a EfficientNetB0 model with provided number of classes
+    - Builds a ML model with provided number of classes
     - Fits the model on training data for 1 epoch 
     - Validates on validation data
     - Records training time
     - Evaluates model on test data and plots loss curves
     """
-    model = build_model(num_classes=classes, aprov_pre=False)
     unfreeze_model(model, unfreeze_layers)
     start = datetime.now()
     history = model.fit(train_data,
@@ -365,7 +354,7 @@ def second_model(classes, name="EfficientNetB0_test2"):
 
 
 #model_2, history_2 = third_model(classes)
-def third_model(classes, name = "EfficientNetB0_test3"):
+def third_model(name="EfficientNetB0_test1", model, train_data, validation_data, test_data, callback,unfreeze_layers):
     """
     Builds and trains a neural network model.
     
@@ -383,7 +372,6 @@ def third_model(classes, name = "EfficientNetB0_test3"):
     - Prints the execution time
     - Evaluates the model on test data and plots loss curves
     """
-    model = build_model(num_classes = classes, aprov_pre=True)
     unfreeze_model(model, unfreeze_layers)
     start = datetime.now()
     history = model.fit(train_data,

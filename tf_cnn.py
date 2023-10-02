@@ -31,3 +31,4 @@ batch_size = 32
 cnn_tf.make_folder(folder_name, path_model_destination)
 
 rain_data, validation_data, test_data = cnn_tf.split_tratin_test_set(path_data_source,batch_size,img_height, img_width)
+

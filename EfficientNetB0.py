@@ -29,7 +29,7 @@ batch_size = 32
 img_height = 224
 img_width = 224
 
-def build_model(num_classes, aprov_pre):
+def build_model(num_classes, aprov_pre, img_augmenation):
     """
     Builds a transfer learning model for image classification
     Args:
