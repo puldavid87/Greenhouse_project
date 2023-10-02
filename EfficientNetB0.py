@@ -15,21 +15,26 @@ from sklearn import metrics
 from sklearn.metrics import (accuracy_score, classification_report,
                              confusion_matrix)
 from tensorflow.keras.applications import EfficientNetB0
-
 import numpy as np
+import os
 
-path_destination = "C:/Users/paur/Documents/Invernadero/Greenhouse_project/TF_MODELS"
+folder_name= "Efficient"
+path_destination = "C:/Users/paur/Documents/Invernadero/Greenhouse_project/Models/" + folder_name
 path_data_source = "C:/Users/paur/Documents/Invernadero/Greenhouse_project/dataset"
 test_dir = "C:/Users/paur/Documents/Invernadero/Greenhouse_project/dataset/test"
 
 classes = 4
 epochs = 20
-unfreeze_layers = [-20]
+unfreeze_layers = -20
 
 # Define some parameters for the loader:
 batch_size = 32
 img_height = 224
 img_width = 224
+
+def make_folder(folder_name, path_destination):
+    os.makedirs(path_destination, exist_ok=True)
+    print("Folder ", folder_name, "was created")
 
 def split_tratin_test_set():
     train_dir = path_data_source  + "/" + "train"
@@ -206,10 +211,11 @@ def plot_loss_curves(history, name):
 
 callback = tf.keras.callbacks.EarlyStopping(monitor='val_accuracy', patience=5)
 
-train_data, validation_data, test_data = split_tratin_test_set()
+
             
 def first_model (classes, pre=False, name = "EfficientNetB0_test1"):            
     model = build_model(num_classes=classes, aprov_pre=pre)
+    start = datetime.now()
     history = model.fit(train_data,
                             epochs=1,
                             steps_per_epoch=len(train_data),
@@ -220,27 +226,74 @@ def first_model (classes, pre=False, name = "EfficientNetB0_test1"):
                             callbacks=[callback],
                             verbose=1,
                             )
-    model.save(
-                path_destination +
-                name+
-                    ".h5")
-    
+    end = datetime.now()
+    # find difference loop start and end time and display
+    td = (end - start)
+    #model.save(
+    #            path_destination +
+    #            name+
+    #                ".h5")
+    print("Exceuction time:", td)
     plot_loss_curves(history, name)
     results (model, test_data, name)
     return model, history
 
+
+def compare_historys(original_history, new_history, initial_epochs=5,name = "EfficientNetB0"):
+    """
+    Compares two model history objects.
+    """
+    # Get original history measurements
+    acc = original_history.history["accuracy"]
+    loss = original_history.history["loss"]
+
+    print(len(acc))
+
+    val_acc = original_history.history["val_accuracy"]
+    val_loss = original_history.history["val_loss"]
+
+    # Combine original history with new history
+    total_acc = acc + new_history.history["accuracy"]
+    total_loss = loss + new_history.history["loss"]
+
+    total_val_acc = val_acc + new_history.history["val_accuracy"]
+    total_val_loss = val_loss + new_history.history["val_loss"]
+
+    print(len(total_acc))
+    print(total_acc)
+
+    # Make plots
+    plt.figure(figsize=(8, 8))
+    plt.subplot(2, 1, 1)
+    plt.plot(total_acc, label='Training Accuracy')
+    plt.plot(total_val_acc, label='Validation Accuracy')
+    plt.plot([initial_epochs-1, initial_epochs-1],
+              plt.ylim(), label='Start Fine Tuning') # reshift plot around epochs
+    plt.legend(loc='lower right')
+    plt.title('Training and Validation Accuracy')
+
+    plt.subplot(2, 1, 2)
+    plt.plot(total_loss, label='Training Loss')
+    plt.plot(total_val_loss, label='Validation Loss')
+    plt.plot([initial_epochs-1, initial_epochs-1],
+              plt.ylim(), label='Start Fine Tuning') # reshift plot around epochs
+    plt.legend(loc='upper right')
+    plt.title('Training and Validation Loss')
+    plt.xlabel('epoch')
+    plt.show()
+    plt.savefig(path_destination +
+                "FINE_"+
+                str(name)+".png")
+     
+make_folder(folder_name, path_destination)
+train_data, validation_data, test_data = split_tratin_test_set()
 model, history = first_model(classes) 
 
-
-models = []
-for j in datasets:
-    train_data, test_data = split_tratin_test_set(j)
-    for i in epochs_vector:
-        for l in unfreeze_layers:
-            model = build_model(num_classes=classes, aprov_pre=False)
-            unfreeze_model(model, l)
-            start = datetime.now()
-            hist = model.fit(train_data,
+def second_model ( classes, pre=False, name = "EfficientNetB0_test2"):
+    model = build_model(num_classes=classes, aprov_pre=False)
+    unfreeze_model(model, unfreeze_layers)
+    start = datetime.now()
+    history = model.fit(train_data,
                              epochs=1,
                              steps_per_epoch=len(train_data),
                              validation_data=test_data,
@@ -249,120 +302,45 @@ for j in datasets:
                              validation_steps=int(len(test_data)),
                              # 
                              verbose=1)
-            end = datetime.now()
-            # end_cpu=psutil.cpu_percent(interval=None)
-            # find difference loop start and end time and display
-            td = (end - start)
-            # td_cpu=(end_cpu-start_cpu)
-            print("----------------- MODEL+FINE T----------------------")
-            cpu_percent_cores = psutil.cpu_percent(interval=2, percpu=True)
-            avg = sum(cpu_percent_cores) / len(cpu_percent_cores)
-            cpu_percent_total_str = ('%.2f' % avg)
-            cpu_percent_cores_str = [
-                ('%.2f' % x) + '%' for x in cpu_percent_cores]
-            df1 = [{'dataset': j,
-                    'epochs': i,
-                    'DA': 0,
-                    'layers': l,
-                    'train': round(hist.history['accuracy'][-1],
-                                   4),
-                    'test':round(hist.history['val_accuracy'][-1],
-                                 4),
-                    'exec.time':td,
-                    'ram':psutil.virtual_memory()[3] / 1000000000,
-                    'cpu': cpu_percent_total_str}]
-            df1 = pd.DataFrame(data=df1)
-            df = pd.concat([df, df1])
-            print('Total: {}'.format(cpu_percent_total_str))
-            print(
-                'Individual CPUs: {}'.format(
-                    '  '.join(cpu_percent_cores_str)))
-            #print("CPU utilization: ", td_cpu)
-            print("Dataset: ", j, "epochs: ", i, "layers: ", l)
-            print(f"The time of execution of above program is : {td}ms")
-            # Calling psutil.cpu_precent()for 4 seconds
-            print('The CPU usage is: ', psutil.cpu_times())
-            # Getting % usage of virtual_memory ( 3rd field)
-            print('RAM memory % used:', psutil.virtual_memory()[2])
-            # Getting usage of virtual_memory in GB ( 4th field)
-            print("---------------------------------------------------")
-            models.append(hist)
-            #results (model,test_data,j, "test2")
-            #model.save(path_destination+"efficient" + "_test2_" + str(j))
-            model.save(
-                path_destination +
-                "efficient_s" +
-                "_test2_" +
-                str(j) +
-                ".h5")
+    end = datetime.now()
+    # find difference loop start and end time and display
+    td = (end - start)
+    print("Exceuction time:", td)
+    #model.save(
+    #            path_destination +
+    #            name+
+    #                ".h5")
+    plot_loss_curves(history, name)
+    results (model, test_data, name)
+    return model, history
 
+model_1, history_1 = second_model(classes) 
 
-training_results_fine(datasets, "test2")
-models = []
+compare_historys(history, history_1, initial_epochs=5,name = "EfficientNetB0")
 
-for j in datasets:
-    train_data, test_data = split_tratin_test_set(j)
-    for i in epochs_vector:
-        for l in unfreeze_layers:
-            model = build_model(num_classes=classes, aprov_pre=True)
-            unfreeze_model(model, l)
-            start = datetime.now()
-            # start_cpu=psutil.cpu_percent(interval=1)
-            hist = model.fit(train_data,
-                             epochs=i + 5,
+def third_model ( classes, pre=True, name = "EfficientNetB0_test3"):
+    model = build_model(num_classes=classes, aprov_pre=True)
+    unfreeze_model(model, unfreeze_layers)
+    start = datetime.now()
+    history = model.fit(train_data,
+                             epochs=1,
                              steps_per_epoch=len(train_data),
                              validation_data=test_data,
                              # Go through less of the validation data so epochs
                              # are faster (we want faster experiments!)
                              validation_steps=int(len(test_data)),
-                             callbacks=[callback],
+                             # 
                              verbose=1)
-            end = datetime.now()
-            td = (end - start)
-            # td_cpu=(end_cpu-start_cpu)
-            print("----------------- MODEL+PRE+FINE T-----------------")
-            cpu_percent_cores = psutil.cpu_percent(interval=2, percpu=True)
-            avg = sum(cpu_percent_cores) / len(cpu_percent_cores)
-            cpu_percent_total_str = ('%.2f' % avg)
-            cpu_percent_cores_str = [
-                ('%.2f' % x) + '%' for x in cpu_percent_cores]
-            df1 = [{'dataset': j,
-                    'epochs': i,
-                    'DA': 1,
-                    'layers': l,
-                    'train': round(hist.history['accuracy'][-1],
-                                   4),
-                    'test':round(hist.history['val_accuracy'][-1],
-                                 4),
-                    'exec.time':td,
-                    'ram':psutil.virtual_memory()[3] / 1000000000,
-                    'cpu': cpu_percent_total_str}]
-            df1 = pd.DataFrame(data=df1)
-            df = pd.concat([df, df1])
-            print('Total: {}'.format(cpu_percent_total_str))
-            print(
-                'Individual CPUs: {}'.format(
-                    '  '.join(cpu_percent_cores_str)))
-            print("Dataset: ", j, "epochs: ", i, "layers: ", l)
-            #print("CPU utilization: ", td_cpu)
-            print(f"The time of execution of above program is : {td}ms")
-            # Calling psutil.cpu_times()for 4 seconds
-            print('The CPU usage is: ', psutil.cpu_times())
-            # Getting % usage of virtual_memory ( 3rd field)
-            print('RAM memory % used:', psutil.virtual_memory()[2])
-            # Getting usage of virtual_memory in GB ( 4th field)
-            print("---------------------------------------------------")
-            models.append(hist)
-            #results (model,test_data,j, "test3")
-            #model.save(path_destination+"efficient" + "_test3_" + str(j))
-            model.save(
-                path_destination +
-                "efficient_s" +
-                "_test3_" +
-                str(j) +
-                ".h5")
+    end = datetime.now()
+    # find difference loop start and end time and display
+    td = (end - start)
+    print("Exceuction time:", td)
+    #model.save(
+    #            path_destination +
+    #            name+
+    #                ".h5")
+    plot_loss_curves(history, name)
+    results (model, test_data, name)
+    return model, history
 
-training_results_fine(datasets, "test3")
-
-
-df.to_csv(path_destination + "efficient_s.csv", index=False)
+model_2, history_2 = third_model(classes) 
