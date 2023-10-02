@@ -205,10 +205,10 @@ def plot_loss_curves(history, name, path_model_destination):
 #model, history = first_model(classes)
 #Loading..
 
-def train_model(model, train_data, validation_data, test_data, callback, path_model_destination, name):
+def train_model(model, train_data, validation_data, test_data, callback, path_model_destination,epochs, name):
     start = datetime.now()
     history = model.fit(train_data,
-                        epochs=1,
+                        epochs=epochs,
                         steps_per_epoch=len(train_data),
                         validation_data=validation_data,
                         # Go through less of the validation data so epochs are
