@@ -205,7 +205,7 @@ def plot_loss_curves(history, name, path_model_destination):
 #model, history = first_model(classes)
 #Loading..
 
-def train_model(model, train_data, validation_data, test_data, callback, path_model_destination, name="EfficientNetB0_test1"):
+def train_model(model, train_data, validation_data, test_data, callback, path_model_destination, name):
     start = datetime.now()
     history = model.fit(train_data,
                         epochs=1,
