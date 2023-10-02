@@ -36,4 +36,4 @@ train_data, validation_data, test_data = cnn_tf.split_tratin_test_set(path_data_
 efficient_model = Efficient.build_model(classes, False)
 efficient_model = cnn_tf.unfreeze_model(efficient_model, 20)
 callback = tf.keras.callbacks.EarlyStopping(monitor='val_accuracy', patience=5)
-cnn_tf.train_model("EfficientNetB0_test1", efficient_model, train_data, validation_data, test_data, callback)
+cnn_tf.train_model(efficient_model, train_data, validation_data, test_data, callback, "EfficientNetB0_test1")
