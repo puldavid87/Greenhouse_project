@@ -28,7 +28,7 @@ def make_folder(folder_name, path_destination):
     print("Folder ", folder_name, "was created")
 
 #train_data, validation_data, test_data = split_tratin_test_set()
-def split_tratin_test_set(path_data_source):
+def split_tratin_test_set(path_data_source,batch_size,img_height, img_width):
     """
     Splits training and test datasets
     Args: 
@@ -45,7 +45,7 @@ def split_tratin_test_set(path_data_source):
     - Returns train, validation and test datasets
     """
     train_dir = path_data_source + "/" + "train"
-    test_dir = path_data_source + "/" + "train"
+    test_dir = path_data_source + "/" + "test"
     # Import data from directories and turn it into batches
     train_data = tf.keras.preprocessing.image_dataset_from_directory(train_dir,
                                                                      seed=123,
