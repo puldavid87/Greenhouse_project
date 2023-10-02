@@ -1,12 +1,16 @@
-import matplotlib.pyplot as plt
-import numpy as np
-import tensorflow as tf
-from tensorflow.keras import layers
 import os
 import random
-from PIL import Image
+
 import matplotlib.image as mpimg
-from tensorflow.keras.preprocessing.image import ImageDataGenerator, load_img, img_to_array, array_to_img
+import matplotlib.pyplot as plt
+import tensorflow as tf
+from PIL import Image
+from tensorflow.keras import layers
+from tensorflow.keras.preprocessing.image import (ImageDataGenerator,
+                                                  array_to_img, img_to_array,
+                                                  load_img)
+
+import numpy as np
 
 dataset_path = "C:/Users/paur/Documents/Invernadero/Greenhouse_project/dataset"
 train_path = dataset_path + "/train"
@@ -18,10 +22,11 @@ labels = [
     'leaves_with_stains',
     'leaves_yellow_stains']
 
-def rotation_per_image (train_path,labels, output_path):
+
+def rotation_per_image(train_path, labels, output_path):
     for i in labels:
         os.makedirs(output_path + "/" + i, exist_ok=True)
-    for i in labels:    
+    for i in labels:
         file_names = os.listdir(train_path + "/" + i)
         img = random.sample(file_names, 1)
         image = load_img(train_path + "/" + i + "/" + str(img[0]))
@@ -30,27 +35,31 @@ def rotation_per_image (train_path,labels, output_path):
         cont = 0
         for batch in datagen.flow(x, batch_size=1):
             augmented_image = array_to_img(batch[0])
-            save_path = os.path.join(output_path + "/" + i, f"augmented_image_{i}_{cont}.jpg")
+            save_path = os.path.join(
+                output_path + "/" + i,
+                f"augmented_image_{i}_{cont}.jpg")
             augmented_image.save(save_path)
             cont += 1
-            
-            if cont >= 20:  # Generate 20 augmented images (you can change this number)
+
+            # Generate 20 augmented images (you can change this number)
+            if cont >= 20:
                 break
-        plot_data_augmentation(image, output_path+"/"+i)  
-                  
+        plot_data_augmentation(image, output_path + "/" + i)
+
+
 datagen = ImageDataGenerator(
     rotation_range=40,  # Rotate images randomly up to 40 degrees
     zoom_range=0.1,  # Zoom in or out by up to 20%
-    width_shift_range=0.1, 
+    width_shift_range=0.1,
     height_shift_range=0.1,
-    brightness_range=[0.4,1.5],
+    brightness_range=[0.4, 1.5],
     horizontal_flip=True,  # Flip the image horizontally
     vertical_flip=True,
-    #fill_mode='nearest'  # Fill pixels with the nearest available value
+    # fill_mode='nearest'  # Fill pixels with the nearest available value
 )
 
 
-def plot_data_augmentation (image, output_path):
+def plot_data_augmentation(image, output_path):
     # Display the original and augmented images
     plt.figure(figsize=(12, 6))
     plt.subplot(2, 1, 1)
@@ -69,4 +78,5 @@ def plot_data_augmentation (image, output_path):
     plt.tight_layout()
     plt.show()
 
-rotation_per_image (train_path,labels, output_path)
+
+rotation_per_image(train_path, labels, output_path)
