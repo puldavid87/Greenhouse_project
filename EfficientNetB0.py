@@ -19,7 +19,7 @@ import numpy as np
 import os
 
 folder_name= "Efficient"
-path_destination = "C:/Users/paur/Documents/Invernadero/Greenhouse_project/Models/" + folder_name
+path_destination = "C:/Users/paur/Documents/Invernadero/Greenhouse_project/Models/" + folder_name + "/"
 path_data_source = "C:/Users/paur/Documents/Invernadero/Greenhouse_project/dataset"
 test_dir = "C:/Users/paur/Documents/Invernadero/Greenhouse_project/dataset/test"
 
@@ -213,8 +213,8 @@ callback = tf.keras.callbacks.EarlyStopping(monitor='val_accuracy', patience=5)
 
 
             
-def first_model (classes, pre=False, name = "EfficientNetB0_test1"):            
-    model = build_model(num_classes=classes, aprov_pre=pre)
+def first_model (classes, name = "EfficientNetB0_test1"):            
+    model = build_model(num_classes=classes, aprov_pre=False)
     start = datetime.now()
     history = model.fit(train_data,
                             epochs=1,
@@ -234,8 +234,8 @@ def first_model (classes, pre=False, name = "EfficientNetB0_test1"):
     #            name+
     #                ".h5")
     print("Exceuction time:", td)
-    plot_loss_curves(history, name)
     results (model, test_data, name)
+    plot_loss_curves(history, name)
     return model, history
 
 
