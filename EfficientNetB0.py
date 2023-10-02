@@ -19,11 +19,7 @@ from tensorflow.keras.applications import EfficientNetB0
 
 import numpy as np
 
-folder_name = "Efficient"
-path_model_destination = "C:/Users/paur/Documents/Invernadero/Greenhouse_project/Models/" + folder_name + "/"
-path_data_source = "C:/Users/paur/Documents/Invernadero/Greenhouse_project/dataset"
-test_dir = "C:/Users/paur/Documents/Invernadero/Greenhouse_project/dataset/test"
-
+callback = tf.keras.callbacks.EarlyStopping(monitor='val_accuracy', patience=5)
 classes = 4
 epochs = 20
 unfreeze_layers = -20

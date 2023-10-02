@@ -10,19 +10,6 @@ from sklearn.metrics import (accuracy_score, classification_report,
                              confusion_matrix)
 import numpy as np
 
-folder_name = "Inception"
-path_model_destination = "C:/Users/paur/Documents/Invernadero/Greenhouse_project/Models/" + folder_name + "/"
-path_data_source = "C:/Users/paur/Documents/Invernadero/Greenhouse_project/dataset"
-test_dir = "C:/Users/paur/Documents/Invernadero/Greenhouse_project/dataset/test"
-
-callback = tf.keras.callbacks.EarlyStopping(monitor='val_accuracy', patience=5)
-classes = 4
-epochs = 20
-unfreeze_layers = -20
-
-# Define some parameters for the loader:
-batch_size = 32
-
 #make_folder(folder_name, path_model_destination)
 def make_folder(folder_name, path_destination):
     """Creates a folder with the given name at the destination path

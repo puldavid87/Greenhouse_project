@@ -16,7 +16,7 @@ import numpy as np
 img_height = 299
 img_width = 299
 
-
+callback = tf.keras.callbacks.EarlyStopping(monitor='val_accuracy', patience=5)
 
 #Loading...
 def build_model(num_classes, aprov_pre):
