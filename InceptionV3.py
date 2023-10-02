@@ -20,6 +20,19 @@ img_width = 299
 
 #Loading...
 def build_model(num_classes, aprov_pre):
+    """
+    Builds a transfer learning model
+    Args:
+        num_classes: {Number of classes for the final output layer}
+        aprov_pre: {Whether to use preprocessing augmentation}
+    Returns: 
+        model: {The compiled Keras model}
+    Processing Logic:
+        - Builds the InceptionV3 model as feature extractor
+        - Optionally adds preprocessing augmentation
+        - Flattens and adds final Dense layer 
+        - Compiles model with categorical crossentropy loss
+    """
     inputs = tf.keras.layers.Input(shape=(img_height, img_width, 3))
     inputs_re = tf.keras.layers.experimental.preprocessing.Rescaling(
         scale=1. / 127.5, offset=-1.)(inputs)

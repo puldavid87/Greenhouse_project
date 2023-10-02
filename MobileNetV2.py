@@ -21,21 +21,21 @@ import numpy as np
 img_height = 224
 img_width = 224
 
-img_augmentation = tf.keras.models.Sequential(
-    [
-        tf.keras.layers.experimental.preprocessing.RandomRotation(0.40),
-        tf.keras.layers.experimental.preprocessing.RandomTranslation(
-            height_factor=0.1,
-            width_factor=0.1),
-        tf.keras.layers.experimental.preprocessing.RandomFlip("horizontal_and_vertical"),
-        tf.keras.layers.RandomContrast(
-            factor=0.2),
-    ],
-    name="img_augmentation",
-)
-
 
 def build_model(num_classes, aprov_pre):
+    """
+    Builds a transfer learning model for image classification
+    Args:
+        num_classes: {Number of classes for the classification task} 
+        aprov_pre: {Whether to use preprocessing augmentation}
+    Returns: 
+        model: {The Keras model}
+    Processing Logic:
+        - Builds a MobileNetV2 model with pretrained weights
+        - Freezes the pretrained weights
+        - Adds global average pooling, dropout and prediction layers on top
+        - Compiles the model with Adam optimizer and categorical crossentropy loss
+    """
     inputs = tf.keras.layers.Input(shape=(img_height, img_width, 3))
     if aprov_pre:
         x = img_augmentation(inputs)

@@ -17,6 +17,21 @@ img_width = 299
 
 #Loading..
 def build_model(num_classes,aprov_pre):
+    """
+    Builds a transfer learning model
+    Args: 
+        num_classes: {Number of classes in the dataset}
+        aprov_pre: {Whether to use image augmentation or not}
+    Returns: 
+        model: {The compiled Keras model}
+    Processing Logic:
+    - Defines the model input layer
+    - Adds preprocessing if aprov_pre is True
+    - Uses Xception model for feature extraction
+    - Freezes pretrained weights
+    - Adds classification head
+    - Compiles the model
+    """
     inputs = tf.keras.layers.Input(shape=(img_height,img_width,3))
     inputs_re = tf.keras.layers.experimental.preprocessing.Rescaling(scale=1./127.5, offset=-1.)(inputs)
     if aprov_pre==True:
