@@ -4,8 +4,10 @@ Created on Fri Apr 14 17:05:12 2023
 
 @author: paur
 """
+import os
 import pathlib
 from datetime import datetime
+
 import matplotlib.pyplot as plt
 import pandas as pd
 import psutil
@@ -15,10 +17,10 @@ from sklearn import metrics
 from sklearn.metrics import (accuracy_score, classification_report,
                              confusion_matrix)
 from tensorflow.keras.applications import EfficientNetB0
-import numpy as np
-import os
 
-folder_name= "Efficient"
+import numpy as np
+
+folder_name = "Efficient"
 path_destination = "C:/Users/paur/Documents/Invernadero/Greenhouse_project/Models/" + folder_name + "/"
 path_data_source = "C:/Users/paur/Documents/Invernadero/Greenhouse_project/dataset"
 test_dir = "C:/Users/paur/Documents/Invernadero/Greenhouse_project/dataset/test"
@@ -32,12 +34,14 @@ batch_size = 32
 img_height = 224
 img_width = 224
 
+
 def make_folder(folder_name, path_destination):
     os.makedirs(path_destination, exist_ok=True)
     print("Folder ", folder_name, "was created")
 
+
 def split_tratin_test_set():
-    train_dir = path_data_source  + "/" + "train"
+    train_dir = path_data_source + "/" + "train"
     # Import data from directories and turn it into batches
     train_data = tf.keras.preprocessing.image_dataset_from_directory(train_dir,
                                                                      seed=123,
@@ -61,6 +65,7 @@ def split_tratin_test_set():
                                                                     batch_size=batch_size,  # number of images to process at a time
                                                                     image_size=(img_height, img_width))  # convert all images to be 224 x 224
     return train_data, validation_data, test_data
+
 
 img_augmentation = tf.keras.models.Sequential(
     [
@@ -194,9 +199,9 @@ def plot_loss_curves(history, name):
     plt.title('Loss')
     plt.xlabel('Epochs')
     plt.legend()
-    plt.savefig( path_destination +
-                    "Loss_"+
-                str(name)+".png")
+    plt.savefig(path_destination +
+                "Loss_" +
+                str(name) + ".png")
 
     # Plot accuracy
     plt.figure()
@@ -205,41 +210,45 @@ def plot_loss_curves(history, name):
     plt.title('Accuracy')
     plt.xlabel('Epochs')
     plt.legend()
-    plt.savefig( path_destination +
-                "ACC_"+
-                str(name)+".png")
+    plt.savefig(path_destination +
+                "ACC_" +
+                str(name) + ".png")
+
 
 callback = tf.keras.callbacks.EarlyStopping(monitor='val_accuracy', patience=5)
 
 
-            
-def first_model (classes, name = "EfficientNetB0_test1"):            
+def first_model(classes, name="EfficientNetB0_test1"):
     model = build_model(num_classes=classes, aprov_pre=False)
     start = datetime.now()
     history = model.fit(train_data,
-                            epochs=1,
-                            steps_per_epoch=len(train_data),
-                            validation_data=validation_data,
-                            # Go through less of the validation data so epochs are
-                            # faster (we want faster experiments!)
-                            validation_steps=int(len(validation_data)),
-                            callbacks=[callback],
-                            verbose=1,
-                            )
+                        epochs=1,
+                        steps_per_epoch=len(train_data),
+                        validation_data=validation_data,
+                        # Go through less of the validation data so epochs are
+                        # faster (we want faster experiments!)
+                        validation_steps=int(len(validation_data)),
+                        callbacks=[callback],
+                        verbose=1,
+                        )
     end = datetime.now()
     # find difference loop start and end time and display
     td = (end - start)
-    #model.save(
+    # model.save(
     #            path_destination +
     #            name+
     #                ".h5")
     print("Exceuction time:", td)
-    results (model, test_data, name)
+    results(model, test_data, name)
     plot_loss_curves(history, name)
     return model, history
 
 
-def compare_historys(original_history, new_history, initial_epochs=5,name = "EfficientNetB0"):
+def compare_historys(
+        original_history,
+        new_history,
+        initial_epochs=5,
+        name="EfficientNetB0"):
     """
     Compares two model history objects.
     """
@@ -267,80 +276,87 @@ def compare_historys(original_history, new_history, initial_epochs=5,name = "Eff
     plt.subplot(2, 1, 1)
     plt.plot(total_acc, label='Training Accuracy')
     plt.plot(total_val_acc, label='Validation Accuracy')
-    plt.plot([initial_epochs-1, initial_epochs-1],
-              plt.ylim(), label='Start Fine Tuning') # reshift plot around epochs
+    plt.plot([initial_epochs - 1, initial_epochs - 1], plt.ylim(),
+             label='Start Fine Tuning')  # reshift plot around epochs
     plt.legend(loc='lower right')
     plt.title('Training and Validation Accuracy')
 
     plt.subplot(2, 1, 2)
     plt.plot(total_loss, label='Training Loss')
     plt.plot(total_val_loss, label='Validation Loss')
-    plt.plot([initial_epochs-1, initial_epochs-1],
-              plt.ylim(), label='Start Fine Tuning') # reshift plot around epochs
+    plt.plot([initial_epochs - 1, initial_epochs - 1], plt.ylim(),
+             label='Start Fine Tuning')  # reshift plot around epochs
     plt.legend(loc='upper right')
     plt.title('Training and Validation Loss')
     plt.xlabel('epoch')
     plt.show()
     plt.savefig(path_destination +
-                "FINE_"+
-                str(name)+".png")
-     
+                "FINE_" +
+                str(name) + ".png")
+
+
 make_folder(folder_name, path_destination)
 train_data, validation_data, test_data = split_tratin_test_set()
-model, history = first_model(classes) 
+model, history = first_model(classes)
 
-def second_model ( classes, pre=False, name = "EfficientNetB0_test2"):
+
+def second_model(classes, name="EfficientNetB0_test2"):
     model = build_model(num_classes=classes, aprov_pre=False)
     unfreeze_model(model, unfreeze_layers)
     start = datetime.now()
     history = model.fit(train_data,
-                             epochs=1,
-                             steps_per_epoch=len(train_data),
-                             validation_data=test_data,
-                             # Go through less of the validation data so epochs
-                             # are faster (we want faster experiments!)
-                             validation_steps=int(len(test_data)),
-                             # 
-                             verbose=1)
+                        epochs=1,
+                        steps_per_epoch=len(train_data),
+                        validation_data=test_data,
+                        # Go through less of the validation data so epochs
+                        # are faster (we want faster experiments!)
+                        validation_steps=int(len(validation_data)),
+                        callbacks=[callback],
+                        #
+                        verbose=1)
     end = datetime.now()
     # find difference loop start and end time and display
     td = (end - start)
     print("Exceuction time:", td)
-    #model.save(
+    # model.save(
     #            path_destination +
     #            name+
     #                ".h5")
+    results(model, test_data, name)
     plot_loss_curves(history, name)
-    results (model, test_data, name)
     return model, history
 
-model_1, history_1 = second_model(classes) 
 
-compare_historys(history, history_1, initial_epochs=5,name = "EfficientNetB0")
+model_1, history_1 = second_model(classes)
 
-def third_model ( classes, pre=True, name = "EfficientNetB0_test3"):
-    model = build_model(num_classes=classes, aprov_pre=True)
+compare_historys(history, history_1, initial_epochs = 5, name = "EfficientNetB0")
+
+
+def third_model(classes, name = "EfficientNetB0_test3"):
+    model = build_model(num_classes = classes, aprov_pre=True)
     unfreeze_model(model, unfreeze_layers)
     start = datetime.now()
     history = model.fit(train_data,
-                             epochs=1,
-                             steps_per_epoch=len(train_data),
-                             validation_data=test_data,
-                             # Go through less of the validation data so epochs
-                             # are faster (we want faster experiments!)
-                             validation_steps=int(len(test_data)),
-                             # 
-                             verbose=1)
+                        epochs=1,
+                        steps_per_epoch=len(train_data),
+                        validation_data=validation_data,
+                        # Go through less of the validation data so epochs
+                        # are faster (we want faster experiments!)
+                        validation_steps=int(len(validation_data)),
+                        callbacks=[callback],
+                        #
+                        verbose=1)
     end = datetime.now()
     # find difference loop start and end time and display
     td = (end - start)
     print("Exceuction time:", td)
-    #model.save(
+    # model.save(
     #            path_destination +
     #            name+
     #                ".h5")
+    results(model, test_data, name)
     plot_loss_curves(history, name)
-    results (model, test_data, name)
     return model, history
 
-model_2, history_2 = third_model(classes) 
+
+model_2, history_2 = third_model(classes)
