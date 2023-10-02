@@ -26,5 +26,5 @@ unfreeze_layers = -20
 # Define some parameters for the loader:
 batch_size = 32
 
-cnn_tf(folder_name, path_model_destination)
-os.makedirs(path_model_destination, exist_ok=True)
+cnn_tf.make_folder(folder_name, path_model_destination)
+
