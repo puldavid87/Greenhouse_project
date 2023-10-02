@@ -19,17 +19,6 @@ from tensorflow.keras.applications import ConvNeXtTiny
 
 import numpy as np
 
-folder_name = "MobileNet"
-path_model_destination = "C:/Users/paur/Documents/Invernadero/Greenhouse_project/Models/" + folder_name + "/"
-path_data_source = "C:/Users/paur/Documents/Invernadero/Greenhouse_project/dataset"
-test_dir = "C:/Users/paur/Documents/Invernadero/Greenhouse_project/dataset/test"
-
-classes = 4
-epochs = 20
-unfreeze_layers = -20
-
-# Define some parameters for the loader:
-batch_size = 32
 img_height = 224
 img_width = 224
 
@@ -47,6 +36,7 @@ img_augmentation = tf.keras.models.Sequential(
 )
 
 
+#Loading...
 def build_model(num_classes, aprov_pre):
     inputs = tf.keras.layers.Input(shape=(img_height, img_width, 3))
     if aprov_pre:

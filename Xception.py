@@ -12,8 +12,10 @@ from sklearn.metrics import (accuracy_score, classification_report,
 
 from tensorflow.keras.applications import Xception
 
+img_height = 299
+img_width = 299
 
-
+#Loading..
 def build_model(num_classes,aprov_pre):
     inputs = tf.keras.layers.Input(shape=(img_height,img_width,3))
     inputs_re = tf.keras.layers.experimental.preprocessing.Rescaling(scale=1./127.5, offset=-1.)(inputs)
