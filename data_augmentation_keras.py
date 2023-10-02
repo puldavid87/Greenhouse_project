@@ -12,18 +12,20 @@ from tensorflow.keras.preprocessing.image import (ImageDataGenerator,
 
 import numpy as np
 
-dataset_path = "C:/Users/paur/Documents/Invernadero/Greenhouse_project/dataset"
-train_path = dataset_path + "/train"
-output_path = "C:/Users/paur/Documents/Invernadero/Greenhouse_project/augmented_images"
-os.makedirs(output_path, exist_ok=True)
-labels = [
-    'dried_leaves',
-    'healthy_leaves',
-    'leaves_with_stains',
-    'leaves_yellow_stains']
-
 
 def rotation_per_image(train_path, labels, output_path):
+    """Rotate images in a folder and save to output folders
+    Args:
+        train_path: Path to folder containing images
+        labels: List of labels for output folders 
+        output_path: Path to save rotated images
+    Returns: 
+        None: Function does not return anything
+    Rotate each image in train_path by 90, 180 and 270 degrees clockwise and save copies to folders in output_path matching each image's label:
+        - Read each image from train_path
+        - Rotate image by 90, 180 and 270 degrees 
+        - Get label of image from labels list
+        - Save rotated copies to folders in output_path matching the label"""
     for i in labels:
         os.makedirs(output_path + "/" + i, exist_ok=True)
     for i in labels:
@@ -60,6 +62,18 @@ datagen = ImageDataGenerator(
 
 
 def plot_data_augmentation(image, output_path):
+    """
+    Plots original and augmented images side by side.
+    Args:
+        image: Original image to augment in one line
+        output_path: Path to directory containing augmented images in one line
+    Returns: 
+        None: Does not return anything, just plots images in one line
+    Processing Logic:
+        - Display original image and title it "Original Image"
+        - Load all augmented images from output directory
+        - Display each augmented image with subplot
+    """
     # Display the original and augmented images
     plt.figure(figsize=(12, 6))
     plt.subplot(2, 1, 1)
@@ -78,5 +92,5 @@ def plot_data_augmentation(image, output_path):
     plt.tight_layout()
     plt.show()
 
-
+#
 rotation_per_image(train_path, labels, output_path)

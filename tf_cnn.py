@@ -1,5 +1,10 @@
 import cnn_tf_models as cnn_tf 
+import os
 
+dataset_path = "C:/Users/paur/Documents/Invernadero/Greenhouse_project/dataset"
+train_path = dataset_path + "/train"
+output_path = "C:/Users/paur/Documents/Invernadero/Greenhouse_project/augmented_images"
+os.makedirs(output_path, exist_ok=True)
 
 folder_name = "Efficient"
 path_model_destination = "C:/Users/paur/Documents/Invernadero/Greenhouse_project/Models/" + folder_name + "/"
