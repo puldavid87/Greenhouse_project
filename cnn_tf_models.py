@@ -70,22 +70,6 @@ def split_tratin_test_set(path_data_source,batch_size,img_height, img_width):
                                                                     image_size=(img_height, img_width))  # convert all images to be 224 x 224
     return train_data, validation_data, test_data
 
-def augmentation ():
-    img_augmentation = tf.keras.models.Sequential(
-        [
-        tf.keras.layers.experimental.preprocessing.RandomRotation(0.40),
-        tf.keras.layers.experimental.preprocessing.RandomTranslation(
-            height_factor=0.1,
-            width_factor=0.1),
-        tf.keras.layers.experimental.preprocessing.RandomFlip("horizontal_and_vertical"),
-        tf.keras.layers.RandomContrast(
-            factor=0.2),
-        ],
-        name="img_augmentation",
-    )
-    return img_augmentation
-
-
 def unfreeze_model(model, num):
     """Unfreeze top layers of a model
     Args:
@@ -220,7 +204,7 @@ def plot_loss_curves(history, name, path_model_destination):
 
 #model, history = first_model(classes)
 #Loading..
-def first_model(name="EfficientNetB0_test1", model, train_data, validation_data, test_data, callback):
+def train_model(name="EfficientNetB0_test1", model, train_data, validation_data, test_data, callback):
     start = datetime.now()
     history = model.fit(train_data,
                         epochs=1,
@@ -308,93 +292,5 @@ def compare_historys(
     plt.savefig(path_model_destination +
                 "FINE_" +
                 str(name) + ".png")
-
-#model_1, history_1 = second_model(classes)
-def second_model(name="EfficientNetB0_test1", model, train_data, validation_data, test_data, callback,unfreeze_layers):
-    """
-    Builds and trains a neural network model on provided data.
-    
-    Args:
-        classes: Number of output classes
-        name: Name of the model
-    Returns: 
-        model: Trained Keras model
-        history: Training history object
-    
-    Processing Logic:
-    - Builds a ML model with provided number of classes
-    - Fits the model on training data for 1 epoch 
-    - Validates on validation data
-    - Records training time
-    - Evaluates model on test data and plots loss curves
-    """
-    unfreeze_model(model, unfreeze_layers)
-    start = datetime.now()
-    history = model.fit(train_data,
-                        epochs=1,
-                        steps_per_epoch=len(train_data),
-                        validation_data=test_data,
-                        # Go through less of the validation data so epochs
-                        # are faster (we want faster experiments!)
-                        validation_steps=int(len(validation_data)),
-                        callbacks=[callback],
-                        #
-                        verbose=1)
-    end = datetime.now()
-    # find difference loop start and end time and display
-    td = (end - start)
-    print("Exceuction time:", td)
-    # model.save(
-    #            path_model_destination +
-    #            name+
-    #                ".h5")
-    results(model, test_data, name)
-    plot_loss_curves(history, name)
-    return model, history
-
-
-#model_2, history_2 = third_model(classes)
-def third_model(name="EfficientNetB0_test1", model, train_data, validation_data, test_data, callback,unfreeze_layers):
-    """
-    Builds and trains a neural network model.
-    
-    Args:
-        classes: Number of output classes
-        name: Name of the model
-    Returns: 
-        model: Trained Keras model
-        history: Training history object
-    
-    Processing Logic:
-    - Builds a EfficientNetB0 model with the given number of classes
-    - Fits the model on the training data for 1 epoch
-    - Validates on validation data 
-    - Prints the execution time
-    - Evaluates the model on test data and plots loss curves
-    """
-    unfreeze_model(model, unfreeze_layers)
-    start = datetime.now()
-    history = model.fit(train_data,
-                        epochs=1,
-                        steps_per_epoch=len(train_data),
-                        validation_data=validation_data,
-                        # Go through less of the validation data so epochs
-                        # are faster (we want faster experiments!)
-                        validation_steps=int(len(validation_data)),
-                        callbacks=[callback],
-                        #
-                        verbose=1)
-    end = datetime.now()
-    # find difference loop start and end time and display
-    td = (end - start)
-    print("Exceuction time:", td)
-    # model.save(
-    #            path_model_destination +
-    #            name+
-    #                ".h5")
-    results(model, test_data, name)
-    plot_loss_curves(history, name)
-    return model, history
-
 
 #compare_historys(history, history_1, initial_epochs = 5, name = "EfficientNetB0")

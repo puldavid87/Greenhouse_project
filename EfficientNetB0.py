@@ -42,7 +42,7 @@ img_augmentation = tf.keras.models.Sequential(
     name="img_augmentation",
 )
 
-def build_model(num_classes, aprov_pre, img_augmenation):
+def build_model(num_classes, aprov_pre):
     """
     Builds a transfer learning model for image classification
     Args:
@@ -56,6 +56,19 @@ def build_model(num_classes, aprov_pre, img_augmenation):
         - Adds global average pooling, dropout and prediction layers on top
         - Compiles the model with Adam optimizer and categorical crossentropy loss
     """
+    img_augmentation = tf.keras.models.Sequential(
+        [
+        tf.keras.layers.experimental.preprocessing.RandomRotation(0.40),
+        tf.keras.layers.experimental.preprocessing.RandomTranslation(
+            height_factor=0.1,
+            width_factor=0.1),
+        tf.keras.layers.experimental.preprocessing.RandomFlip("horizontal_and_vertical"),
+        tf.keras.layers.RandomContrast(
+            factor=0.2),
+        ],
+        name="img_augmentation",
+    )
+        
     inputs = tf.keras.layers.Input(shape=(img_height, img_width, 3))
     if aprov_pre:
         x = img_augmentation(inputs)
