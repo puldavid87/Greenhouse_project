@@ -205,7 +205,7 @@ def plot_loss_curves(history, name, path_model_destination):
 #model, history = first_model(classes)
 #Loading..
 
-def train_model(*, name="EfficientNetB0_test1", model, train_data, validation_data, test_data, callback):
+def train_model(model, train_data, validation_data, test_data, callback, path_model_destination, name="EfficientNetB0_test1"):
     start = datetime.now()
     history = model.fit(train_data,
                         epochs=1,
@@ -225,8 +225,8 @@ def train_model(*, name="EfficientNetB0_test1", model, train_data, validation_da
     #            name+
     #                ".h5")
     print("Exceuction time:", td)
-    results(model, test_data, name)
-    plot_loss_curves(history, name)
+    results(model, test_data, name, path_model_destination )
+    plot_loss_curves(history, name, path_model_destination)
     return model, history
 
 #Loading...
