@@ -92,5 +92,4 @@ def plot_data_augmentation(image, output_path):
     plt.tight_layout()
     plt.show()
 
-#
-rotation_per_image(train_path, labels, output_path)
+#rotation_per_image(train_path, labels, output_path)
