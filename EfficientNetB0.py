@@ -29,6 +29,19 @@ batch_size = 32
 img_height = 224
 img_width = 224
 
+img_augmentation = tf.keras.models.Sequential(
+    [
+        tf.keras.layers.experimental.preprocessing.RandomRotation(0.40),
+        tf.keras.layers.experimental.preprocessing.RandomTranslation(
+            height_factor=0.1,
+            width_factor=0.1),
+        tf.keras.layers.experimental.preprocessing.RandomFlip("horizontal_and_vertical"),
+        tf.keras.layers.RandomContrast(
+            factor=0.2),
+    ],
+    name="img_augmentation",
+)
+
 def build_model(num_classes, aprov_pre, img_augmenation):
     """
     Builds a transfer learning model for image classification

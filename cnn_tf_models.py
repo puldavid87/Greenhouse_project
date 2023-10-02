@@ -72,18 +72,6 @@ def split_tratin_test_set(path_data_source,batch_size,img_height, img_width):
 
 
 
-img_augmentation = tf.keras.models.Sequential(
-    [
-        tf.keras.layers.experimental.preprocessing.RandomRotation(0.40),
-        tf.keras.layers.experimental.preprocessing.RandomTranslation(
-            height_factor=0.1,
-            width_factor=0.1),
-        tf.keras.layers.experimental.preprocessing.RandomFlip("horizontal_and_vertical"),
-        tf.keras.layers.RandomContrast(
-            factor=0.2),
-    ],
-    name="img_augmentation",
-)
 
 
 def unfreeze_model(model, num):
