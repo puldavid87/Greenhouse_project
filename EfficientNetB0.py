@@ -21,7 +21,7 @@ from tensorflow.keras.applications import EfficientNetB0
 import numpy as np
 
 folder_name = "Efficient"
-path_destination = "C:/Users/paur/Documents/Invernadero/Greenhouse_project/Models/" + folder_name + "/"
+path_model_destination = "C:/Users/paur/Documents/Invernadero/Greenhouse_project/Models/" + folder_name + "/"
 path_data_source = "C:/Users/paur/Documents/Invernadero/Greenhouse_project/dataset"
 test_dir = "C:/Users/paur/Documents/Invernadero/Greenhouse_project/dataset/test"
 
@@ -176,7 +176,7 @@ def results(model, test_data, name):
     ax.set_xlabel('\nPredicted Values')
     ax.set_ylabel('Actual Values ')
     plt.savefig(
-        path_destination +
+        path_model_destination +
         "cf_efficient_" +
         str(name) +
         ".png")
@@ -199,7 +199,7 @@ def plot_loss_curves(history, name):
     plt.title('Loss')
     plt.xlabel('Epochs')
     plt.legend()
-    plt.savefig(path_destination +
+    plt.savefig(path_model_destination +
                 "Loss_" +
                 str(name) + ".png")
 
@@ -210,7 +210,7 @@ def plot_loss_curves(history, name):
     plt.title('Accuracy')
     plt.xlabel('Epochs')
     plt.legend()
-    plt.savefig(path_destination +
+    plt.savefig(path_model_destination +
                 "ACC_" +
                 str(name) + ".png")
 
@@ -235,7 +235,7 @@ def first_model(classes, name="EfficientNetB0_test1"):
     # find difference loop start and end time and display
     td = (end - start)
     # model.save(
-    #            path_destination +
+    #            path_model_destination +
     #            name+
     #                ".h5")
     print("Exceuction time:", td)
@@ -290,12 +290,12 @@ def compare_historys(
     plt.title('Training and Validation Loss')
     plt.xlabel('epoch')
     plt.show()
-    plt.savefig(path_destination +
+    plt.savefig(path_model_destination +
                 "FINE_" +
                 str(name) + ".png")
 
 
-make_folder(folder_name, path_destination)
+make_folder(folder_name, path_model_destination)
 train_data, validation_data, test_data = split_tratin_test_set()
 model, history = first_model(classes)
 
@@ -319,7 +319,7 @@ def second_model(classes, name="EfficientNetB0_test2"):
     td = (end - start)
     print("Exceuction time:", td)
     # model.save(
-    #            path_destination +
+    #            path_model_destination +
     #            name+
     #                ".h5")
     results(model, test_data, name)
@@ -351,7 +351,7 @@ def third_model(classes, name = "EfficientNetB0_test3"):
     td = (end - start)
     print("Exceuction time:", td)
     # model.save(
-    #            path_destination +
+    #            path_model_destination +
     #            name+
     #                ".h5")
     results(model, test_data, name)

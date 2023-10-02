@@ -4,7 +4,7 @@ import data_augmentation_keras as dak
 dataset_path = "C:/Users/paur/Documents/Invernadero/Greenhouse_project/dataset"
 train_path = dataset_path+"/train"
 test_path = dataset_path+"/test"
-destination_path = "C:/Users/paur/Documents/Invernadero/"
+destination_path = "C:/Users/paur/Documents/Invernadero/Greenhouse_project"
 
 #first try
 de.autentication('paulrosero/tomato-leaf-illness-detection')
