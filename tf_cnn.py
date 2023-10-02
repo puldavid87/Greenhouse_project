@@ -15,7 +15,7 @@ dak.rotation_per_image(train_path, labels, output_path)
 
 #Models
 folder_name = "Efficient"
-path_model_destination = "C:/Users/paur/Documents/Invernadero/Greenhouse_project/Models/" + folder_name + "/"
+path_model_destination = "C:/Users/paur/Documents/Invernadero/Greenhouse_project/Models/" + folder_name 
 path_data_source = "C:/Users/paur/Documents/Invernadero/Greenhouse_project/dataset"
 test_dir = "C:/Users/paur/Documents/Invernadero/Greenhouse_project/dataset/test"
 
@@ -26,4 +26,5 @@ unfreeze_layers = -20
 # Define some parameters for the loader:
 batch_size = 32
 
-
+cnn_tf(folder_name, path_model_destination)
+os.makedirs(path_model_destination, exist_ok=True)
