@@ -19,13 +19,7 @@ from tensorflow.keras.applications import EfficientNetB0
 
 import numpy as np
 
-callback = tf.keras.callbacks.EarlyStopping(monitor='val_accuracy', patience=5)
-classes = 4
-epochs = 20
-unfreeze_layers = -20
-
 # Define some parameters for the loader:
-batch_size = 32
 img_height = 224
 img_width = 224
 

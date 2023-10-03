@@ -220,10 +220,10 @@ def train_model(model, train_data, validation_data, test_data, callback, path_mo
     end = datetime.now()
     # find difference loop start and end time and display
     td = (end - start)
-    # model.save(
-    #            path_model_destination +
-    #            name+
-    #                ".h5")
+    model.save(
+                path_model_destination + "/" +
+                name + 
+                    ".h5")
     print("Exceuction time:", td)
     results(model, test_data, name, path_model_destination )
     plot_loss_curves(history, name, path_model_destination)

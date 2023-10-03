@@ -32,6 +32,18 @@ def build_model(num_classes,aprov_pre):
     - Adds classification head
     - Compiles the model
     """
+    img_augmentation = tf.keras.models.Sequential(
+    [
+        tf.keras.layers.experimental.preprocessing.RandomRotation(0.40),
+        tf.keras.layers.experimental.preprocessing.RandomTranslation(
+            height_factor=0.1,
+            width_factor=0.1),
+        tf.keras.layers.experimental.preprocessing.RandomFlip("horizontal_and_vertical"),
+        tf.keras.layers.RandomContrast(
+            factor=0.2),
+    ],
+    name="img_augmentation",
+)
     inputs = tf.keras.layers.Input(shape=(img_height,img_width,3))
     inputs_re = tf.keras.layers.experimental.preprocessing.Rescaling(scale=1./127.5, offset=-1.)(inputs)
     if aprov_pre==True:

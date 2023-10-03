@@ -22,8 +22,6 @@ import numpy as np
 img_height = 224
 img_width = 224
 
-callback = tf.keras.callbacks.EarlyStopping(monitor='val_accuracy', patience=5)
-
 #Loading...
 def build_model(num_classes, aprov_pre):
     """
@@ -42,6 +40,18 @@ def build_model(num_classes, aprov_pre):
     - Adds global average pooling, dropout and dense layers on top  
     - Compiles the model using Adam optimizer and categorical crossentropy loss
     """
+    img_augmentation = tf.keras.models.Sequential(
+    [
+        tf.keras.layers.experimental.preprocessing.RandomRotation(0.40),
+        tf.keras.layers.experimental.preprocessing.RandomTranslation(
+            height_factor=0.1,
+            width_factor=0.1),
+        tf.keras.layers.experimental.preprocessing.RandomFlip("horizontal_and_vertical"),
+        tf.keras.layers.RandomContrast(
+            factor=0.2),
+    ],
+    name="img_augmentation",
+)
     inputs = tf.keras.layers.Input(shape=(img_height, img_width, 3))
     if aprov_pre:
         x = img_augmentation(inputs)

@@ -18,6 +18,7 @@ from tensorflow.keras.applications import MobileNetV2
 
 import numpy as np
 
+# Define some parameters for the loader:
 img_height = 224
 img_width = 224
 
@@ -36,6 +37,19 @@ def build_model(num_classes, aprov_pre):
         - Adds global average pooling, dropout and prediction layers on top
         - Compiles the model with Adam optimizer and categorical crossentropy loss
     """
+    img_augmentation = tf.keras.models.Sequential(
+        [
+        tf.keras.layers.experimental.preprocessing.RandomRotation(0.40),
+        tf.keras.layers.experimental.preprocessing.RandomTranslation(
+            height_factor=0.1,
+            width_factor=0.1),
+        tf.keras.layers.experimental.preprocessing.RandomFlip("horizontal_and_vertical"),
+        tf.keras.layers.RandomContrast(
+            factor=0.2),
+        ],
+        name="img_augmentation",
+    )
+        
     inputs = tf.keras.layers.Input(shape=(img_height, img_width, 3))
     if aprov_pre:
         x = img_augmentation(inputs)
