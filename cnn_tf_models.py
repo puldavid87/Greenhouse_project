@@ -91,6 +91,7 @@ def unfreeze_model(model, num):
     )
 
 
+
 def results(model, test_data, name,path_model_destination):
     """
     Calculates model performance metrics on test data
@@ -221,7 +222,7 @@ def train_model(model, train_data, validation_data, test_data, callback, path_mo
     # find difference loop start and end time and display
     td = (end - start)
     model.save(
-                path_model_destination + "/" +
+                path_model_destination +
                 name + 
                     ".h5")
     print("Exceuction time:", td)

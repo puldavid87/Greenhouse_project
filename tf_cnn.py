@@ -16,7 +16,7 @@ dak.rotation_per_image(train_path, labels, output_path)
 
 #Models
 folder_name = "Efficient"
-path_model_destination = "C:/Users/paur/Documents/Invernadero/Greenhouse_project/Models/" + folder_name 
+path_model_destination = "C:/Users/paur/Documents/Invernadero/Greenhouse_project/Models/" + folder_name + "/"
 path_data_source = "C:/Users/paur/Documents/Invernadero/Greenhouse_project/dataset"
 test_dir = "C:/Users/paur/Documents/Invernadero/Greenhouse_project/dataset/test"
 
@@ -34,6 +34,7 @@ cnn_tf.make_folder(folder_name, path_model_destination)
 train_data, validation_data, test_data = cnn_tf.split_tratin_test_set(path_data_source,batch_size,img_height, img_width)
 
 efficient_model = Efficient.build_model(classes, False)
-efficient_model = cnn_tf.unfreeze_model(efficient_model, 20)
+cnn_tf.unfreeze_model(efficient_model, 20) 
 callback = tf.keras.callbacks.EarlyStopping(monitor='val_accuracy', patience=5)
+model, train_data, validation_data, test_data, callback, path_model_destination,epochs, name
 cnn_tf.train_model(efficient_model, train_data, validation_data, test_data, callback, path_model_destination, 1,name="EfficientNetB0_test1")
