@@ -13,8 +13,8 @@ from tensorflow.keras.applications import InceptionV3
 import numpy as np
 
 
-img_height = 299
-img_width = 299
+img_height = 224
+img_width = 224
 
 #Loading...
 def build_model(num_classes, aprov_pre):
