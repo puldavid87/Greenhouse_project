@@ -21,6 +21,16 @@ test_path = dataset_path+"/test"
 
 # link: 'paulrosero/tomato-leaf-illness-detection'
 def autentication(link):
+    """Authenticates and downloads a Kaggle dataset
+    Args:
+        link: The dataset link to download
+    Returns: 
+        None: No return value, downloads dataset files
+    Authenticates with Kaggle API:
+        Authenticates the user with Kaggle API credentials
+        Converts link to string for API call
+    Downloads dataset files:
+        Uses link to call Kaggle API dataset_download_files method to download files"""
     str(link)
     api = KaggleApi()
     api.authenticate()
@@ -28,6 +38,15 @@ def autentication(link):
 
 #file_name : 'tomato-leaf-illness-detection.zip'
 def unzipfile(file_name):
+    """Unzips a file
+    Args:
+        file_name: Name of the zip file to unzip
+    Returns: 
+        None: Unzips the file if found
+    - Check if the file exists using os.path.isfile()
+    - If file exists, open the zip file using ZipFile()
+    - Extract all contents of the zip file using extractall()
+    - If file does not exist, print an error message"""
     str(file_name)
     if os.path.isfile(file_name)==True:
         with zipfile.ZipFile(file_name,'r') as zipref:
@@ -36,6 +55,16 @@ def unzipfile(file_name):
         print("File not found")
         
 def check_data(dataset):
+    """
+    Check data in a dataset
+    Args:
+        dataset: The dataset directory to check
+    Returns: 
+        None: Does not return anything
+    - Checks for any errors or invalid files in the dataset
+
+    - Logs any errors or issues found with the files to a report
+    - Returns nothing after completing the check"""
     for dirpath, dirnames, filenames in os.walk(dataset):
         print(f"There are {len(dirnames)} directories and {len(filenames)} images in '{dirpath}'.")
 
@@ -53,6 +82,8 @@ def get_labels(train_path):
         tam_labels = np.array(tam) 
     return labels, tam_labels    
         
+#Loading.
+
 def view_n_images(target_dir, target_class,n):
     target_path = target_dir+"/"+target_class
     file_names = os.listdir(target_path)
@@ -68,8 +99,9 @@ def view_n_images(target_dir, target_class,n):
 
 def plot_n_images(train_path,labels,n):
     for i in labels:
-     view_n_images(train_path,i,n)
+        view_n_images(train_path,i,n)
         
+
 def shape_labels(labels,train_path):
 
     for i in labels:
