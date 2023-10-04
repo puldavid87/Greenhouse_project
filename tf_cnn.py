@@ -37,10 +37,10 @@ train_data, validation_data, test_data = cnn_tf.split_tratin_test_set(path_data_
 data_augmentation = [False, True]
 
 for augmentation in data_augmentation:
-    efficient_model = Efficient.build_model(classes, augmentation),
-    inceptionV3 = Inception.build_model(classes, augmentation),
-    mobilenet_model = Mobilenet.build_model(classes, augmentation),
-    xception_model = Xception.build_model(classes, augmentation),
+    efficient_model = Efficient.build_model(classes, augmentation)
+    inceptionV3 = Inception.build_model(classes, augmentation)
+    mobilenet_model = Mobilenet.build_model(classes, augmentation)
+    xception_model = Xception.build_model(classes, augmentation)
     convnext_model =  ConvNext.build_model(classes, augmentation) 
     #Models
     ml_models = [efficient_model,inceptionV3,mobilenet_model,xception_model,convnext_model]
@@ -55,7 +55,4 @@ for augmentation in data_augmentation:
                            callback, path_model_destination,epochs,name=str(folder_name) 
                            + "_" + str(augmentation) + "unfree")
         
-        
     
-
-
