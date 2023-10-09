@@ -108,16 +108,17 @@ def results(model, test_data, name,path_model_destination):
         - Prints classification report and confusion matrix
         - Plots and saves confusion matrix
     """
+    results = model.evaluate(test_data)
+    print("test loss, test acc:", results)
+    y_test = []    
     y_pred = []
-    results = model.predict(test_data)
-    for i in results:
-        y_pred.append(np.argmax(i))
-
-    y_test = []
+    cont = 0
     for test_image, test_label in test_data:
-        for t in test_label:
-            print(np.array(t))
-            y_test.append(np.argmax(t))
+        for image in test_image:            
+            y_pred.append(np.argmax((model.predict(np.expand_dims(image, axis=0)))))
+            y_test.append(np.argmax(test_label[cont,:]))
+            cont+=1
+        cont = 0      
     print("")
     print(
         "Precision: {}%".format(
