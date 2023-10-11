@@ -134,7 +134,7 @@ word = ["unfree"]
 
 for i in models :
     for j in data_augmentation:        
-        model = tf.keras.models.load_model(model_path + i + "/" + i + "_" + j + ".h5"))
+        model = tf.keras.models.load_model(model_path + i + "/" + i + "_" + j + ".h5")
         to_tf_lite(model, model_path, i + "_" + j + "_lite")
         to_int8(model, model_path, i + "_" + j + "int8_lite")
         for k in word:
