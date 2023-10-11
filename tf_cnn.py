@@ -7,6 +7,7 @@ import MobileNetV2 as Mobilenet
 import Xception 
 import ConvNext 
 import os
+import mlflow
 import tensorflow as tf
 
 #Datasets
@@ -36,23 +37,30 @@ train_data, validation_data, test_data = cnn_tf.split_tratin_test_set(path_data_
 
 data_augmentation = [False, True]
 
-for augmentation in data_augmentation:
-    efficient_model = Efficient.build_model(classes, augmentation)
-    inceptionV3 = Inception.build_model(classes, augmentation)
-    mobilenet_model = Mobilenet.build_model(classes, augmentation)
-    xception_model = Xception.build_model(classes, augmentation)
-    convnext_model =  ConvNext.build_model(classes, augmentation) 
-    #Models
-    ml_models = [efficient_model,inceptionV3,mobilenet_model,xception_model,convnext_model]
-    for i, folder_name in enumerate (models):
-        path_model_destination = "C:/Users/paur/Documents/Invernadero/Greenhouse_project/Models/" + folder_name + "/"
-        cnn_tf.make_folder(folder_name, path_model_destination) 
-        cnn_tf.train_model(ml_models[i], train_data, validation_data, test_data, 
-                           callback, path_model_destination,epochs,name=str(folder_name) 
-                           + "_" + str(augmentation))
-        cnn_tf.unfreeze_model(ml_models[i], unfreeze_layers )
-        cnn_tf.train_model(ml_models[i], train_data, validation_data, test_data, 
-                           callback, path_model_destination,epochs,name=str(folder_name) 
-                           + "_" + str(augmentation) + "unfree")
+mlflow.set_experiment('Demo') 
+with mlflow.start_run(): 
+    for augmentation in data_augmentation:
+        efficient_model = Efficient.build_model(classes, augmentation)
+        inceptionV3 = Inception.build_model(classes, augmentation)
+        mobilenet_model = Mobilenet.build_model(classes, augmentation)
+        xception_model = Xception.build_model(classes, augmentation)
+        convnext_model =  ConvNext.build_model(classes, augmentation) 
+        #Models
+        ml_models = [efficient_model,inceptionV3,mobilenet_model,xception_model,convnext_model]
+        for i, folder_name in enumerate (models):
+            path_model_destination = "C:/Users/paur/Documents/Invernadero/Greenhouse_project/Models/" + folder_name + "/"
+            cnn_tf.make_folder(folder_name, path_model_destination) 
+            model, history = cnn_tf.train_model(ml_models[i], train_data, validation_data, test_data, 
+                            callback, path_model_destination,epochs,name=str(folder_name) 
+                            + "_" + str(augmentation))
+            mlflow.sklearn.log_model(model, str(folder_name) 
+                            + "_" + str(augmentation))
+            cnn_tf.unfreeze_model(ml_models[i], unfreeze_layers )
+            model, history  =cnn_tf.train_model(ml_models[i], train_data, validation_data, test_data, 
+                            callback, path_model_destination,epochs,name=str(folder_name) 
+                            + "_" + str(augmentation) + "unfree")
+            mlflow.sklearn.log_model(model, str(folder_name) 
+                            + "_" + str(augmentation) + "unfree")
+mlflow.end_run()
         
     

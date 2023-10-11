@@ -1,4 +1,5 @@
 import pathlib
+import mlflow
 from datetime import datetime
 import os
 import matplotlib.pyplot as plt
@@ -9,7 +10,7 @@ from sklearn import metrics
 from sklearn.metrics import (accuracy_score, classification_report,
                              confusion_matrix)
 import numpy as np
-
+mlflow.tensorflow.autolog() 
 #make_folder(folder_name, path_model_destination)
 def make_folder(folder_name, path_destination):
     """Creates a folder with the given name at the destination path
@@ -110,6 +111,8 @@ def results(model, test_data, name,path_model_destination):
     """
     results = model.evaluate(test_data)
     print("test loss, test acc:", results)
+    loss = results [0]
+    test_acc = results [1]
     y_test = []    
     y_pred = []
     cont = 0
@@ -118,7 +121,25 @@ def results(model, test_data, name,path_model_destination):
             y_pred.append(np.argmax((model.predict(np.expand_dims(image, axis=0)))))
             y_test.append(np.argmax(test_label[cont,:]))
             cont+=1
-        cont = 0      
+        cont = 0
+    precision = metrics.precision_score(
+                y_test,
+                y_pred,
+                average="weighted")
+    recall =  metrics.recall_score(
+                y_test,
+                y_pred,
+                average="weighted")
+    f1_score =  metrics.f1_score(
+                y_test,
+                y_pred,
+                average="weighted")
+    error =     metrics.mean_absolute_error(y_test, y_pred)
+    mlflow.log_metric("precision",precision)
+    mlflow.log_metric("recall",recall)
+    mlflow.log_metric("f1_score",f1_score)
+    mlflow.log_metric("error",error)  
+    mlflow.tensorflow.autolog()  
     print("")
     print(
         "Precision: {}%".format(
@@ -222,6 +243,12 @@ def train_model(model, train_data, validation_data, test_data, callback, path_mo
     end = datetime.now()
     # find difference loop start and end time and display
     td = (end - start)
+    for metric in ["loss", "accuracy", "val_loss", "val_accuracy"]:
+        mlflow.log_metric(metric, history.history[metric][-1])
+    mlflow.log_param("epochs", epochs)
+    mlflow.log_param("time_taken", td)
+    mlflow.log_param("name", name)
+    mlflow.tensorflow.autolog()
     model.save(
                 path_model_destination +
                 name + 
