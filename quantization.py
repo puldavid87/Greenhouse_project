@@ -20,7 +20,7 @@ img_width = 224
 # Define some parameters for the loader:
 batch_size = 32
 path_data_source = "C:/Users/paur/Documents/Invernadero/Greenhouse_project/dataset"
-model_path = "C:/Users/paur/Documents/Invernadero/Greenhouse_project/Models/Efficient/"
+model_path = "C:/Users/paur/Documents/Invernadero/Greenhouse_project/Models/"
 train_data, validation_data, test_data = cnn_tf.split_tratin_test_set(path_data_source,batch_size,img_height, img_width)
 
 def representative_data_gen():
@@ -128,7 +128,18 @@ def evaluate_model(interpreter, test_data, name,model_path):
     # Display the visualization of the Confusion Matrix.
     plt.show()
 
+models = ["Efficient", "Inception", "Mobilenet", "Xception", "Convext"]
+data_augmentation = ["False", "True"]
+word = ["unfree"]
 
-model = tf.keras.models.load_model(model_path + "Inception_test1.h5")
-to_tf_lite(model, model_path, "efficient_lite")
-to_int8(model, model_path, "int8_lite")
+for i in models :
+    for j in data_augmentation:        
+        model = tf.keras.models.load_model(model_path + i + "/" + i + "_" + j + ".h5"))
+        to_tf_lite(model, model_path, i + "_" + j + "_lite")
+        to_int8(model, model_path, i + "_" + j + "int8_lite")
+        for k in word:
+            model = tf.keras.models.load_model(model_path + i + "/" + i + "_" + j + k +".h5")
+            to_tf_lite(model, model_path, i + "_" + j + k + "_lite")
+            to_int8(model, model_path, i + "_" + j + k + "int8_lite")
+            
+
