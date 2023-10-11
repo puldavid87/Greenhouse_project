@@ -113,6 +113,8 @@ def results(model, test_data, name,path_model_destination):
     print("test loss, test acc:", results)
     loss = results [0]
     test_acc = results [1]
+    mlflow.log_metric("loss",loss)
+    mlflow.log_metric("test_acc", test_acc)
     y_test = []    
     y_pred = []
     cont = 0
