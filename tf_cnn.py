@@ -4,6 +4,7 @@ import data_augmentation_keras as dak
 import EfficientNetB0 as Efficient
 import InceptionV3 as Inception
 import MobileNetV2 as Mobilenet
+import vgg16 as VGG16
 import Xception 
 import ConvNext 
 import os
@@ -43,8 +44,9 @@ for augmentation in data_augmentation:
     mobilenet_model = Mobilenet.build_model(classes, augmentation)
     xception_model = Xception.build_model(classes, augmentation)
     convnext_model =  ConvNext.build_model(classes, augmentation) 
+    vgg16_model = VGG16.build_model(classes, augmentation)
     #Models
-    ml_models = [efficient_model,inceptionV3,mobilenet_model,xception_model,convnext_model]
+    ml_models = [efficient_model,inceptionV3,mobilenet_model,xception_model,convnext_model, vgg16_model]
     for i, folder_name in enumerate (models):
         mlflow.set_experiment(models[i]) 
         with mlflow.start_run(): 
