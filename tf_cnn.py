@@ -31,7 +31,7 @@ img_width = 224
 batch_size = 32
 callback = tf.keras.callbacks.EarlyStopping(monitor='val_accuracy', patience=5)
 
-models = ["Efficient", "Inception", "Mobilenet", "Xception", "Convext"]
+models = ["Efficient", "Inception", "Mobilenet", "Xception", "Convext", "VGG16"]
 path_data_source = "C:/Users/paur/Documents/Invernadero/Greenhouse_project/dataset"
 test_dir = "C:/Users/paur/Documents/Invernadero/Greenhouse_project/dataset/test"
 train_data, validation_data, test_data = cnn_tf.split_tratin_test_set(path_data_source,batch_size,img_height, img_width)
