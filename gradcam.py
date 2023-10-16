@@ -1,3 +1,4 @@
+#https://github.com/keras-team/keras-applications/blob/master/keras_applications/vgg16.py
 import os
 import random
 import matplotlib.pyplot as plt
