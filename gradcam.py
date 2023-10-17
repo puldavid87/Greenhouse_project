@@ -33,7 +33,7 @@ img_label4 = keras.utils.load_img(test_path + "/leaves_yellow_stains/20230704_21
 test_images = [img_label1,img_label2,img_label3,img_label4]
 
 models_names = ["Efficient", "Inception", "Mobilenet", "Xception", "VGG16"]
-model_convext = tf.keras.models.load_model("C:/Users/paur/Documents/Invernadero/Models/Convext/Convext_Falseunfree.h5")
+#model_convext = tf.keras.models.load_model("C:/Users/paur/Documents/Invernadero/Models/Convext/Convext_Falseunfree.h5")
 model_efficient = tf.keras.models.load_model("C:/Users/paur/Documents/Invernadero/Models/Efficient/Efficient_Falseunfree.h5")
 model_inception = tf.keras.models.load_model("C:/Users/paur/Documents/Invernadero/Models/Inception/Inception_Falseunfree.h5")
 model_mobilenet = tf.keras.models.load_model("C:/Users/paur/Documents/Invernadero/Models/Mobilenet/Mobilenet_Falseunfree.h5")
@@ -41,6 +41,12 @@ model_xception = tf.keras.models.load_model("C:/Users/paur/Documents/Invernadero
 model_vgg16 = tf.keras.models.load_model("C:/Users/paur/Documents/Invernadero/Models/VGG16/vgg16_Falseunfree.h5")
 models = [model_efficient, model_inception, model_mobilenet, model_xception, model_vgg16]
 
+model_variations = ["added_top_l", "unfrozen", "augmented", "unfro_aug"]
+############ Efficient  ################################
+model_efficient_1 = tf.keras.models.load_model("C:/Users/paur/Documents/Invernadero/Models/Efficient/Efficient_False.h5")
+model_efficient_2 = tf.keras.models.load_model("C:/Users/paur/Documents/Invernadero/Models/Efficient/Efficient_True.h5")
+model_efficient_3 = tf.keras.models.load_model("C:/Users/paur/Documents/Invernadero/Models/Efficient/Efficient_Falseunfree.h5")
+model_efficient_4 = tf.keras.models.load_model("C:/Users/paur/Documents/Invernadero/Models/Efficient/Efficient_Trueunfree.h5")
 
 #Loading.
 def visualization (image_titles):
@@ -73,7 +79,7 @@ def grad_cam_models (models, img, models_names, output_path, label, label_score)
         
         
         
-def grad_cam_labels (model, test_images, model_name):
+def grad_cam_labels (model, test_images, model_name, output_path):
     gradcam = Gradcam(model,
                     model_modifier=replace2linear,
                     clone=False)
@@ -94,18 +100,40 @@ def grad_cam_labels (model, test_images, model_name):
     plt.show() 
     
 
-
-
-
+#########################################################################################
 visualization (image_titles)
 for i, image in enumerate (test_images):
     grad_cam_models (models, image, models_names, output_path, image_titles[i] , i)
 
 for i, model in enumerate (models):
-    grad_cam_labels (model_efficient, test_images, models_names[i])
+    grad_cam_labels (model, test_images, models_names[i],output_path)
 
+##########################################################################################
+model_variations = ["added_top_l", "unfrozen", "augmented", "unfro_aug"]
+############ Efficient  ################################
+model_efficient_1 = tf.keras.models.load_model("C:/Users/paur/Documents/Invernadero/Models/Efficient/Efficient_False.h5")
+model_efficient_2 = tf.keras.models.load_model("C:/Users/paur/Documents/Invernadero/Models/Efficient/Efficient_True.h5")
+model_efficient_3 = tf.keras.models.load_model("C:/Users/paur/Documents/Invernadero/Models/Efficient/Efficient_Falseunfree.h5")
+model_efficient_4 = tf.keras.models.load_model("C:/Users/paur/Documents/Invernadero/Models/Efficient/Efficient_Trueunfree.h5")
 
+efficient_models = [model_efficient_1,model_efficient_2,model_efficient_3,model_efficient_4]
+output_path_effi = "C:/Users/paur/Documents/Invernadero/Greenhouse_project/grad_cam" + "/Efficient/"
+os.makedirs(output_path_effi, exist_ok=True)
+for i, model in enumerate (efficient_models):
+    grad_cam_labels (model, test_images, model_variations[i],output_path_effi)
+    
+############ Efficient  ################################
+model_mobilenet_1 = tf.keras.models.load_model("C:/Users/paur/Documents/Invernadero/Models/Mobilenet/Mobilenet_False.h5")
+model_mobilenet_2 = tf.keras.models.load_model("C:/Users/paur/Documents/Invernadero/Models/Mobilenet/Mobilenet_True.h5")
+model_mobilenet_3 = tf.keras.models.load_model("C:/Users/paur/Documents/Invernadero/Models/Mobilenet/Mobilenet_Falseunfree.h5")
+model_mobilenet_4 = tf.keras.models.load_model("C:/Users/paur/Documents/Invernadero/Models/Mobilenet/Mobilenet_Trueunfree.h5")
 
+mobilenet_models = [model_mobilenet_1,model_mobilenet_2,model_mobilenet_3,model_mobilenet_4]
+output_path_mobi = "C:/Users/paur/Documents/Invernadero/Greenhouse_project/grad_cam" + "/Mobilenet/"
+os.makedirs(output_path_mobi, exist_ok=True)
+for i, model in enumerate (mobilenet_models):
+    grad_cam_labels (model, test_images, model_variations[i],output_path_mobi)
+    
 '''
 images = []
 name = []
