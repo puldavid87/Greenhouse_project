@@ -1,0 +1,15 @@
+artifact_uri: file:///c:/Users/paur/Documents/Invernadero/Greenhouse_project/mlruns/0/9041ac3112c24e009cb79f8d180b8f9c/artifacts
+end_time: 1697622971216
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 9041ac3112c24e009cb79f8d180b8f9c
+run_name: rumbling-conch-47
+run_uuid: 9041ac3112c24e009cb79f8d180b8f9c
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1697621657443
+status: 4
+tags: []
+user_id: paur

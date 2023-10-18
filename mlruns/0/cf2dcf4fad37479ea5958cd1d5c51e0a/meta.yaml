@@ -1,0 +1,15 @@
+artifact_uri: file:///c:/Users/paur/Documents/Invernadero/Greenhouse_project/mlruns/0/cf2dcf4fad37479ea5958cd1d5c51e0a/artifacts
+end_time: 1697642366672
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: cf2dcf4fad37479ea5958cd1d5c51e0a
+run_name: placid-eel-229
+run_uuid: cf2dcf4fad37479ea5958cd1d5c51e0a
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1697642172847
+status: 4
+tags: []
+user_id: paur

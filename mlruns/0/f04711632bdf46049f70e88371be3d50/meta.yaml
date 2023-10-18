@@ -1,0 +1,15 @@
+artifact_uri: file:///c:/Users/paur/Documents/Invernadero/Greenhouse_project/mlruns/0/f04711632bdf46049f70e88371be3d50/artifacts
+end_time: 1697538073105
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: f04711632bdf46049f70e88371be3d50
+run_name: silent-eel-756
+run_uuid: f04711632bdf46049f70e88371be3d50
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1697538070467
+status: 4
+tags: []
+user_id: paur

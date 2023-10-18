@@ -1,0 +1,15 @@
+artifact_uri: file:///c:/Users/paur/Documents/Invernadero/Greenhouse_project/mlruns/0/c9c041b7119e454789b3262dc5e6724b/artifacts
+end_time: 1697538460083
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: c9c041b7119e454789b3262dc5e6724b
+run_name: funny-calf-901
+run_uuid: c9c041b7119e454789b3262dc5e6724b
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1697538139134
+status: 4
+tags: []
+user_id: paur

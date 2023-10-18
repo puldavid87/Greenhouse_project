@@ -1,0 +1,15 @@
+artifact_uri: file:///c:/Users/paur/Documents/Invernadero/Greenhouse_project/mlruns/0/00b8b7e169fa4b1eb091b4aeaf0a6026/artifacts
+end_time: 1697625515071
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 00b8b7e169fa4b1eb091b4aeaf0a6026
+run_name: exultant-mare-589
+run_uuid: 00b8b7e169fa4b1eb091b4aeaf0a6026
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1697624059538
+status: 4
+tags: []
+user_id: paur

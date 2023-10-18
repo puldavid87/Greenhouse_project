@@ -1,0 +1,15 @@
+artifact_uri: file:///c:/Users/paur/Documents/Invernadero/Greenhouse_project/mlruns/0/5dac3aa7fe294ef384d61172344f393d/artifacts
+end_time: 1697620934086
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 5dac3aa7fe294ef384d61172344f393d
+run_name: aged-perch-757
+run_uuid: 5dac3aa7fe294ef384d61172344f393d
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1697620849418
+status: 4
+tags: []
+user_id: paur

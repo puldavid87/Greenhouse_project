@@ -1,0 +1,15 @@
+artifact_uri: file:///c:/Users/paur/Documents/Invernadero/Greenhouse_project/mlruns/0/47a00ed404c04717af99e11cea7fc30c/artifacts
+end_time: 1697541453274
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 47a00ed404c04717af99e11cea7fc30c
+run_name: silent-cub-957
+run_uuid: 47a00ed404c04717af99e11cea7fc30c
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1697541164752
+status: 4
+tags: []
+user_id: paur

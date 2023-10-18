@@ -1,0 +1,15 @@
+artifact_uri: file:///c:/Users/paur/Documents/Invernadero/Greenhouse_project/mlruns/0/c47ebb205c4641d3b86ddc791facf472/artifacts
+end_time: 1697540174150
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: c47ebb205c4641d3b86ddc791facf472
+run_name: ambitious-dog-223
+run_uuid: c47ebb205c4641d3b86ddc791facf472
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1697539418587
+status: 4
+tags: []
+user_id: paur

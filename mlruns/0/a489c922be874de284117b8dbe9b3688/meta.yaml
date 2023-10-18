@@ -1,0 +1,15 @@
+artifact_uri: file:///c:/Users/paur/Documents/Invernadero/Greenhouse_project/mlruns/0/a489c922be874de284117b8dbe9b3688/artifacts
+end_time: 1697537988600
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: a489c922be874de284117b8dbe9b3688
+run_name: indecisive-swan-683
+run_uuid: a489c922be874de284117b8dbe9b3688
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1697537988445
+status: 4
+tags: []
+user_id: paur
