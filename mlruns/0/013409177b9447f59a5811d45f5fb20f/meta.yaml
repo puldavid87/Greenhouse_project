@@ -1,0 +1,15 @@
+artifact_uri: file:///c:/Users/paur/Documents/Invernadero/Greenhouse_project/mlruns/0/013409177b9447f59a5811d45f5fb20f/artifacts
+end_time: 1697813491881
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 013409177b9447f59a5811d45f5fb20f
+run_name: adaptable-pig-141
+run_uuid: 013409177b9447f59a5811d45f5fb20f
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1697813328848
+status: 4
+tags: []
+user_id: paur

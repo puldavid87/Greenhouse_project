@@ -1,0 +1,15 @@
+artifact_uri: file:///c:/Users/paur/Documents/Invernadero/Greenhouse_project/mlruns/0/23c9734487d14f088c844e56141c4b66/artifacts
+end_time: 1697814771033
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 23c9734487d14f088c844e56141c4b66
+run_name: bustling-carp-361
+run_uuid: 23c9734487d14f088c844e56141c4b66
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1697814507557
+status: 4
+tags: []
+user_id: paur

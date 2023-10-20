@@ -378,3 +378,5 @@ distiller_hist = distiller.fit(train_data, validation_data = validation_data, ep
               steps_per_epoch = len(train_data), callbacks=[callback] )
 
 inception_s.save("C:/Users/paur/Documents/Invernadero/Models/Inception/Inception_S.h5")
+
+inception_s.evaluate(test_data, verbose = 1)
